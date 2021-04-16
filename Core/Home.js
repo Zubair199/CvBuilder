@@ -10,7 +10,7 @@ const Home = ({navigation})=>{
       <View style={styles.footer}>
         <View style={styles.text}>
         <Text h3>Get Stated!</Text>
-        <Button round uppercase onPress={()=>{navigation.navigate('Form')}}>Sign In</Button>
+        <Button round uppercase onPress={()=>{navigation.navigate('SignIn')}}>Sign In</Button>
         </View>
       
       </View>

@@ -47,9 +47,9 @@ exports.signin = (req,res)=>{
             })
         }
        
-        const {_id,name,email}= user
+        const {_id,username,email}= user
        
-        return res.json({user:{_id,email,name}});
+        res.json({user:{_id,email,username}});
 
 
 

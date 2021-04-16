@@ -1,30 +1,75 @@
-import React,{useState} from 'react'
-import { StyleSheet, View,TouchableOpacity,Image,ScrollView } from 'react-native';
-import { Input,theme, Block,Text,Icon,Button , Toast } from 'galio-framework';
-import {signIn} from '../Api/CoreApis';
-import axios from 'react-native-axios'
+import React,{useState,useEffect} from 'react'
+import { StyleSheet, View } from 'react-native';
+import { Input,theme, Block,Text,Icon,Button  } from 'galio-framework';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
+import {signIn} from '../Api/CoreApis'
 const SignIn = ({navigation})=>{
 
-  const [isShow,setShow]= useState(false)
   const [email,setEmail]= useState("")
   const [password,setPassword]= useState("")
   const [error,setError]= useState("")
+  const [success,setSuccess]= useState("")
   const duration = 3000
-  const handleSignIn = (event)=>{
-    const user= {
-      email,password
-    }
-    // fetch('http://192.168.100.11:8088/api/signin',{method:"POST",headers: {
-    //   Accept: 'application/json',
-    //   'Content-Type': 'application/json'
-    // },body:JSON.stringify({
-    //   email:email,
-    //   password:password
-    // })}).then(response=>{
-    //     response.json()}).then((json)=>{console.log(json.data)}).catch(err=>{ console.log(err)})
 
-    axios.post('http://192.168.100.11:8088/api/signin',{email,password}).then(res=>{console.log(res)}).catch(err=>{setError(err.response.data.error);setShow(true);  setTimeout(()=>{setShow(false)}, 3000) })
-    
+
+
+  const showToast = (text1,type,text2)=>{
+
+    Toast.show({
+      text1: text1,
+      text2: text2,
+      type: type
+    })
+  }
+
+  useEffect(()=>{
+    if(error===""&&success===""){
+      
+    }
+    else if(error!==""){
+      Toast.show({
+        text1:'Error',
+        text2: error,
+        type: 'error'
+      })
+    }
+   
+  
+  },[error])
+  useEffect(()=>{
+    if(success===""){
+      console.log()
+    }
+    else if(success!==""){
+      Toast.show({
+        text1:'Success',
+        text2: success,
+        type: 'success'
+      })
+    }
+   
+  
+  },[success])
+  const handleSignIn =  (event)=>{
+    if (email.trim() === "") {
+     
+      showToast("Error","error","Please Enter Email Address")
+    } else if(password ==="") {
+      
+      showToast("Error","error","Please Enter Password")
+    }
+    else{
+     signIn(email,password)
+     .then(async(res)=>{
+      try {
+        await AsyncStorage.setItem('user', JSON.stringify(res.data.user))
+      } catch (e) {
+        console.log(err)
+      }
+       setSuccess(`Successfully Logged In With ${res.data.user.username}!`);navigation.navigate('Form',{username:res.data.user.username,email:email})})
+     .catch(err=>{setError(err.response.data.error)})
+    }
   }
   return(
     
@@ -32,7 +77,7 @@ const SignIn = ({navigation})=>{
       
       <View style={styles.header}>
      
-      <Toast isShow={isShow} round positionIndicator="top" fadeOutDuration={duration} color="warning">{error}</Toast>
+      
       
       <Icon name="login" family="AntDesign" size={55} style={{paddingRight:10}}/>
       <Text h1 color="#fff"	>Login In</Text>

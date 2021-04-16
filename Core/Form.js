@@ -2,9 +2,11 @@ import React,{useState} from 'react'
 import { StyleSheet, View,TouchableOpacity,ScrollView,Image } from 'react-native';
 import { Input,theme,withGalio,GalioProvider, Block,Text,Icon,Button } from 'galio-framework';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-const Form = ({route,navigation})=>{
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const Form =  ({route,navigation})=>{
 
-  
+   
+ 
   
   const [email,setEmail]= useState("")
   const [username,setUsername]= useState("")

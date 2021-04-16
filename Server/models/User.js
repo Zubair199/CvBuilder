@@ -4,7 +4,7 @@ const {v1 : uuidv1} = require('uuid')
 
 
 const userSchema = new mongoose.Schema({
-  name:{
+  username:{
     type:String,
     trim:true,
     required:true,
@@ -19,10 +19,6 @@ const userSchema = new mongoose.Schema({
   hashed_password:{
     type:String,
     required:true,
-  },
-  about:{
-    type:String,
-    trim:true,
   },
   salt:String,
   

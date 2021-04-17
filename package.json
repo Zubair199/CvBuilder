@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.13.0",
     "@react-native-community/datetimepicker": "3.2.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.9.4",
@@ -21,12 +22,12 @@
     "react-native-axios": "^0.17.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-modal-datetime-picker": "^9.2.0",
+    "react-native-pdf-lib": "^1.0.0",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-toast-message": "^1.4.9",
-    "react-native-web": "^0.15.7",
-    "@react-native-async-storage/async-storage": "^1.13.0"
+    "react-native-web": "^0.15.7"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

@@ -67,7 +67,7 @@ const SignIn = ({navigation})=>{
       } catch (e) {
         console.log(err)
       }
-       setSuccess(`Successfully Logged In With ${res.data.user.username}!`);navigation.navigate('Form',{username:res.data.user.username,email:email})})
+       setSuccess(`Successfully Logged In With ${res.data.user.username}!`);navigation.navigate('Form')})
      .catch(err=>{setError(err.response.data.error)})
     }
   }

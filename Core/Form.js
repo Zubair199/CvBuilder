@@ -3,11 +3,9 @@ import { StyleSheet, View,TouchableOpacity,ScrollView,Image } from 'react-native
 import { Input,theme,withGalio,GalioProvider, Block,Text,Icon,Button } from 'galio-framework';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 const Form =  ({route,navigation})=>{
 
-   
- 
-  
   const [email,setEmail]= useState("")
   const [username,setUsername]= useState("")
   const [description,setDescription]= useState("")
@@ -16,6 +14,7 @@ const Form =  ({route,navigation})=>{
   const [university,setUniversity]= useState("")
   const [masters,setMasters]= useState("")
   const [phone,setPhone]= useState(0)
+  const [skills,setSkills]= useState([])
   const [error,setError]= useState("")
   const [current , setCurrent] = useState("")
   const [dateFromS, setDateFromS] = useState(new Date())
@@ -24,6 +23,20 @@ const Form =  ({route,navigation})=>{
   const [dateToH, setDateToH] = useState(new Date())
   const [dateFromU, setDateFromU] = useState(new Date())
   const [dateToU, setDateToU] = useState(new Date())
+  const [dateFromM, setDateFromM] = useState(new Date())
+  const [dateToM, setDateToM] = useState(new Date())
+
+  const [values , setValues] = useState({
+    title:[],
+    description:[],
+    startDate:[],
+    endDate:[]
+  })
+
+  const [currentTitle,setCurT] = useState("")
+  const [currentDes,setCurD] = useState("")
+  const [currentStart,setCurS] = useState("")
+  const [currentEnd,setCurE] = useState("")
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
  
 
@@ -35,6 +48,7 @@ const Form =  ({route,navigation})=>{
   };
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
+   
   };
   const handleConfirm = (date) => {
     const date1 =  JSON.stringify(date)
@@ -68,21 +82,42 @@ const Form =  ({route,navigation})=>{
     else if(current === "masterend"){
       setDateToM(dateF[0])
     }
-
+    else if(current === "projects"){
+      // let val = {...values}
+      // val.startDate.push(dateF[0])
+      setCurS(dateF[0])
+    }
+    else if(current === "projecte"){  
+      // let val = {...values}
+      // val.endDate.push(dateF[0])
+      setCurE(dateF[0])
+    }
     hideDatePicker();
-   
   };
-
- 
-  const handleSignUp = (event)=>{
- 
+  const handleExperience = ()=>{
+    let val = {...values}
+      val.startDate.push(currentStart)
+      val.endDate.push(currentEnd)
+      val.title.push(currentTitle)
+      val.description.push(currentDes)
+      setValues(val)
+      Toast.show({
+        text1: "Success",
+        text2: "Project Added Successfully",
+        type: 'success'
+      })
+      setCurD("")
+      setCurS("")
+      setCurT("")
+      setCurE("")
   }
+  
   return(
     <ScrollView>
     <View style={styles.container}>
 
       <View style={styles.header}><Image source={require('../assets/logo/resume.png')} style={{ width: 100, height: 100,borderTopLeftRadius:50,borderTopRightRadius:50,borderBottomRightRadius:50,borderBottomLeftRadius:50 }}/>
-      <Text h1 color="#fff"	>Resume Form</Text></View>
+      <Text h4 color="#fff"	>Resume Form</Text></View>
       <View style={styles.footer}>
       <Text h4 >Credentials</Text>
       <View style={styles.input}>
@@ -112,40 +147,41 @@ const Form =  ({route,navigation})=>{
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-     
-      <Input icon="school" family="FontAwesome5" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="High School?" style={styles.textInput} multiline={true} numberOfLines={2}/>
-      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("highschoolstart")}>Start Date</Button><Button onPress={()=>showDatePicker("highschoolend")}>End Date</Button></View>
-     
-      <Input icon="school" family="FontAwesome5" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="University?" style={styles.textInput} multiline={true} numberOfLines={2}/>
+
+      <Input icon="school" family="FontAwesome5" onChangeText={(h)=>{setHighSchool(h)}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="High School?" style={styles.textInput} multiline={true} numberOfLines={2}/>
+      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("highschoolstart")}>Start Date</Button><Button onPress={()=>showDatePicker("highschoolend")}>End Date</Button></View>  
+      <Input icon="school" family="FontAwesome5" onChangeText={(u)=>{setUniversity(u)}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="University?" style={styles.textInput} multiline={true} numberOfLines={2}/>
       <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("unistart")}>Start Date</Button><Button onPress={()=>showDatePicker("uniend")}>End Date</Button></View>
-     
-      <Input icon="school" family="FontAwesome5" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Masters?" style={styles.textInput} multiline={true} numberOfLines={2}/>
-      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("masterstart")}>Start Date</Button><Button onPress={()=>showDatePicker("masterend")}>End Date</Button></View>
-     
-      
+      <Input icon="school" family="FontAwesome5" onChangeText={(m)=>{setMasters(m)}} color={theme.COLORS.THEME}  placeholderTextColor={theme.COLORS.THEME}  placeholder="Masters?" style={styles.textInput} multiline={true} numberOfLines={2}/>
+      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("masterstart")}>Start Date</Button><Button onPress={()=>showDatePicker("masterend")}>End Date</Button></View> 
       </View>
       <Text h4 >Skills( C++ , Java etc)</Text>
       <View style={styles.input}>
-      <Input icon="social-skillshare" family="Foundation" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="C++" style={styles.textInput} multiline={true} numberOfLines={100}/>
+      <Input icon="social-skillshare" family="Foundation" onChangeText={(skill)=>{const sk1 = skill.split(',');setSkills(sk1)}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="C++" style={styles.textInput} multiline={true} numberOfLines={100}/>
       </View>
-      <Text h4 >Prior Projects?</Text>
-      <View style={styles.input}>
-        
-      <Input icon="text-document" family="Entypo" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Description" style={styles.textInput} multiline={true} numberOfLines={4}/>
+      <Text h4 >Experience?</Text>
+      <View style={styles.input}>     
+      <Input icon="text-document" family="Entypo" onChangeText={(t)=>{setCurT(t)}} value={currentTitle} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Title" style={styles.textInput} multiline={true} numberOfLines={1}/>
       </View>
-      
-     
+      <View style={styles.input}>     
+      <Input icon="text-document" family="Entypo" onChangeText={(d)=>{setCurD(d)}} value={currentDes} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="description" style={styles.textInput} multiline={true} numberOfLines={1}/>
+      </View>
+      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("projects")} >Start Date</Button><Button onPress={()=>showDatePicker("projecte")}>End Date</Button></View>
+      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>handleExperience()} color='info' >Add</Button></View>
 
-      <View style={{justifyContent:'center',paddingLeft:30}}>
-      <Block>
-      <Button onPress={(e)=>navigation.navigate('Form')} color='#50C7C7' round>
+
+
+      {/* <View style={{flexjustifyContent:'center',paddingLeft:0}}> */}
+      <Block center>
+        {/* <Text>{JSON.stringify(values)}</Text> */}
+      <Button onPress={(e)=>navigation.navigate('Pdf')} color='#50C7C7' round>
         Submit
       </Button>
       </Block>
       
-      <Text h6>{error}</Text>
+    
       
-      </View>
+      {/* </View> */}
      
       </View>
       

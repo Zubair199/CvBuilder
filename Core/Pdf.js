@@ -1,38 +1,51 @@
 import React,{useState} from 'react'
 import { StyleSheet, View,TouchableOpacity,ScrollView,Image } from 'react-native';
 import { Input,theme,withGalio,GalioProvider, Block,Text,Icon,Button } from 'galio-framework';
-import PDFLib, { PDFDocument, PDFPage } from 'react-native-pdf-lib';
+import * as Print from 'expo-print'
+import * as FileSystem from 'expo-file-system';
+const Pdf = ({route,navigation})=>{
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pdf Content</title>
+        <style>
+            body {
+                font-size: 16px;
+                color: rgb(255, 196, 0);
+            }
 
-const Pdf = ({navigation})=>{
+            h1 {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Hello, UppLabs!</h1>
+    </body>
+    </html>
+`;
 
-  const page1 = PDFPage
-  .create()
-  .setMediaBox(250, 250)
-  .drawText('You can add JPG images too!')
-  .drawImage(jpgPath, 'jpg', {
-     x: 5,
-     y: 125,
-     width: 200,
-     height: 100,
+const createPDF = async (html) => {
+  try {
+      const { uri } = await Print.printToFileAsync({ html });
+      return uri;
+  } catch (err) {
+      console.error(err);
+  }
+};
+
+createPDF(htmlContent).then(data=>{FileSystem.DownloadResumable.downloadAsync(data)
+  .then(({ uri }) => {
+    console.log('Finished downloading to ', uri);
   })
-  .drawImage(pngPath, 'png', {
-     x: 5,
-     y: 25,
-     width: 200,
-     height: 100,
-  });
+  .catch(error => {
+    console.error(error);
+  });})
  
-// Create a new PDF in your app's private Documents directory
-const docsDir = await PDFLib.getDocumentsDirectory();
-const pdfPath = `${docsDir}/resume.pdf`;
-PDFDocument
-  .create(pdfPath)
-  .addPages(page1)
-  .write() // Returns a promise that resolves with the PDF's path
-  .then(path => {
-    console.log('PDF created at: ' + path);
-    // Do stuff with your shiny new PDF!
-  });
+
 
   return(
     <View>

@@ -7,9 +7,11 @@ import Toast from 'react-native-toast-message';
 const Form =  ({route,navigation})=>{
 
   const [email,setEmail]= useState("")
+  const [title,setTitle] = useState("")
   const [username,setUsername]= useState("")
   const [description,setDescription]= useState("")
   const [school,setSchool]= useState("")
+  const [address,setAddress]= useState("")
   const [highSchool,setHighSchool]= useState("")
   const [university,setUniversity]= useState("")
   const [masters,setMasters]= useState("")
@@ -127,10 +129,18 @@ const Form =  ({route,navigation})=>{
       </View>
       <View style={styles.input}>
       
-      <Input icon="email" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Email" type="email-address" onChangeText={(email)=>{setEmail(email)}} />
+      <Input icon="profile" family="AntDesign" style={styles.textInput} placeholder="Title" onChangeText={(tiles)=>{setTitle(tiles)}} placeholderTextColor={theme.COLORS.THEME} />
+     
       </View>
       <View style={styles.input}>
-      <Input icon="phone" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Phone Number" type="numeric" onChangeText={(phone)=>{setPhone(email)}} />
+      
+      <Input icon="email" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Email" type="email-address" onChangeText={(email1)=>{setEmail(email1)}} />
+      </View>
+      <View style={styles.input}>
+      <Input icon="phone" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Phone Number" type="numeric" onChangeText={(phon)=>{setPhone(phon)}} />
+      </View>
+      <View style={styles.input}>
+      <Input icon="phone" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Address" onChangeText={(add1)=>{setAddress(add1)}} />
       </View>
       <View style={styles.input}>
       <Input icon="text-document" onChangeText={(des)=>{setDescription(des)}} family="Entypo" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Description" style={styles.textInput} multiline={true} numberOfLines={4}/>
@@ -174,7 +184,7 @@ const Form =  ({route,navigation})=>{
       {/* <View style={{flexjustifyContent:'center',paddingLeft:0}}> */}
       <Block center>
         {/* <Text>{JSON.stringify(values)}</Text> */}
-      <Button onPress={(e)=>navigation.navigate('Pdf')} color='#50C7C7' round>
+      <Button onPress={(e)=>navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills})} color='#50C7C7' round>
         Submit
       </Button>
       </Block>

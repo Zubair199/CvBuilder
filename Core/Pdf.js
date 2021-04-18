@@ -275,3 +275,15 @@ createPDF(htmlContent).then(data=>{
 
 
 export default Pdf
+
+
+
+
+
+
+
+
+
+
+
+// Add flex-rightend to contacts 

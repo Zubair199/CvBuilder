@@ -8,8 +8,8 @@ import * as MediaLibrary from "expo-media-library";
 import * as Sharing from "expo-sharing";
 const Pdf = ({route,navigation})=>{
 
-  const {email,title,username,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills} = route.params;
-  
+  const {email,title,username ,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills,values} = route.params;
+  console.log(values)
   let title1 =""
   let tname1 = ""
   let time1s=""
@@ -23,42 +23,50 @@ const Pdf = ({route,navigation})=>{
   let time3s=""
   let time3e=""
   if(university!==""&&highSchool!==""){
-
-    title1 ="UNIVERSITY"
+    console.log(university)
+    title1 ="UNIVERSITY:"
     tname1 = university
-    time1s=dateFromU+"-"
-    time1e=dateToU
-    title2 ="HIGH-SCHOOL"
+    time1s="("+dateFromU.toString().substr(0,7)+"/"
+    time1e=dateToU.toString().substr(0,7)+")"
+    title2 ="HIGH-SCHOOL:"
     tname2 = highSchool
-    time2s=dateFromH+"-"
-    time2e=dateToH
-    title3 ="SCHOOL"
+    time2s="("+dateFromH.toString().substr(0,7)+"/"
+    time2e=dateToH.toString().substr(0,7)+")"
+    title3 ="SCHOOL:"
     tname3 = school
-    time3s=dateFromS+"-"
-    time3e=dateToS
+    time3s="("+dateFromS.toString().substr(0,7)+"/"
+    time3e=dateToS.toString().substr(0,7)+")"
+    console.log(time2s,time2e)
   }
   else if(highSchool!==""){
+    title1 =university
+    tname1 = university
+    time1s=dateFromU
+    time1e=dateToU
      title2 ="HIGH-SCHOOL"
      tname2 = highSchool
-     time2s=dateFromH+"-"
+     time2s=dateFromH+"--"
      time2e=dateToH
      title3 ="SCHOOL"
      tname3 = school
-     time3s=dateFromS+"-"
+     time3s=dateFromS+"--"
      time3e=dateToS
-
+     console.log(time2s,time2e)
   }
 
+
   let set1 = []
+  
+ 
   skills.map((val,index)=>{
     if(index==0){
-     set1.push('<ul class="list-group list-group-horizontal">') 
+     set1.push(`<ul class="list-group list-group-horizontal" style="font-size:10px;">`) 
      set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`)
      if(skills.length<2){
       set1.push(`</ul>`) 
      } 
     }
-    else if(index>0&&index<=1){
+    else if(index==1){
       set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
       if(skills.length<3){
         set1.push(`</ul>`) 
@@ -69,42 +77,77 @@ const Pdf = ({route,navigation})=>{
       if(skills.length<4){
         set1.push(`</ul>`) 
        } 
+      
+     
     }
     else if(index==3){
       set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
-      set1.push(`</ul>`) 
-    
+      if(skills.length<5){
+        set1.push(`</ul>`) 
+       } 
+
     }
     if(index==4){
-     set1.push('<ul class="list-group list-group-horizontal">') 
+     
      set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
-     if(skills.length<6){
-      set1.push(`</ul>`) 
-     }
+     set1.push(`</ul>`) 
     }
-    else if(index>4&&index<=5){
+    else if(index==5){
+      set1.push('<ul class="list-group list-group-horizontal" style="font-size:10px">') 
       set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
-      if(skills>7){
+      if(skills.length<7){
         set1.push(`</ul>`) 
-       }
+       } 
     }
     else if(index==6){
+     
       set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
+      
       if(skills.length<8){
         set1.push(`</ul>`) 
        }
     }
     else if(index==7){
       set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
+      if(skills.length<9){
+        set1.push(`</ul>`) 
+       }
+      }
+    else if(index==8){
+      set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
       set1.push(`</ul>`) 
-    
     }
+    else if(index==9){
+      set1.push('<ul class="list-group list-group-horizontal" style="font-size:10px;">') 
+      set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
+      
+      if(skills.length<11){
+        set1.push(`</ul>`) 
+       }
+    }
+    else if(index==10){
+      set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
+      if(skills.length<12){
+        set1.push(`</ul>`) 
+       }
+      }
+    else if(index==11){
+      set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
+      set1.push(`</ul>`) 
+    }
+
+
    
   
   })
+
+
  
   
+  let set2 = new Array(values.title.length).fill(0)
+ 
 
+  console.log(set2)
   const htmlContent = `
     <!DOCTYPE html>
     <html lang="en">
@@ -128,13 +171,13 @@ const Pdf = ({route,navigation})=>{
     </head>
     <body>
   
-    <div class="container">
+    <div style="border-style:solid;border-width: 0.4px;"  class="container">
   <div class="row">
     <div class="col">
-     <h1  style="">${username}</h1>
+     <h1 style="">${username}</h1>
     </div>
     <div class="col">
-    <h5 style="color:grey;padding-left:180px">${email}&nbsp;&nbsp;<span style="padding-top:0px" class="material-icons">email</span></h5>
+    <h6 style="color:grey;text-align:right;padding:8px">${email}<span style="padding-top:0px" class="material-icons">email</span></h6>
     </div>
 
   </div>
@@ -143,47 +186,56 @@ const Pdf = ({route,navigation})=>{
      <h4 style="color:DodgerBlue;">${title}</h4>
     </div>
     <div class="col">
-    <h5 style="color:grey;padding-left:320px;padding-bottom:15px">${phone}&nbsp;&nbsp<span class="material-icons">
+    <h6 style="color:grey;text-align:right;padding:8px">${phone}<span class="material-icons">
     phone_iphone
-    </span></h5>
+    </span></h6>
     </div>
    
   </div>
   <div class="row">
     <div class="col">
-    <textarea rows="4"  style="border:0px" cols="25">${description}</textarea>
+    <textarea rows="3"  style="border:0px" cols="45">${description}</textarea>
     </div> 
     <div class="col">
-    <h5 style="color:grey;padding-left:170px">${address}&nbsp;&nbsp<span class="material-icons">
+    <h6 style="color:grey;text-align:right;padding:8px">${address}&nbsp;&nbsp<span class="material-icons">
     home
-    </span></h5>
+    </span></h6>
     </div> 
-    <hr class="rounded">
+  
     
-    <div class="row">
-    <div class="col">
-    <h1 ><b><u>Education</u></b></h1>
-    <h2 style="color:grey;padding-top:20px">${title1}:</h2>
-    <h3>${tname1}</h3>
-    <h5>${time1s}${time1e}</h5>
-    <h2 style="color:grey;padding-top:20px">${title2}:</h2>
-    <h3>${tname2}</h3>
+    <div style="border-style:solid;border-width: 0.4px 0px 0px 0px;" class="row">
+    <div style="border-style:solid;border-width: 0px 0.4px 0px 0px;" class="col">
+    <h3 ><b><u>Education</u></b></h3>
+    <h2 style="color:blue;padding-top:${title1?`20px`:`0px`}">${title1}</h2>
+    <h4>${tname1}</h4>
+    <h5>${time1s.substr(0,9)}${time1e.substr(0,9)}</h5>
+    <h2 style="color:blue;padding-top:20px">${title2}</h2>
+    <h4>${tname2}</h4>
     <h5>${time2s}${time2e}</h5>
-    <h2 style="color:grey;padding-top:20px">${title3}:</h2>
-    <h3>${tname3}</h3>
+    <h2 style="color:blue;padding-top:20px">${title3}</h2>
+    <h4>${tname3}</h4>
     <h5>${time3s}${time3e}</h5>
-   
+
     
 
     </div>
-    <div class="vl"></div>
-    <div  class="col">
-    <h1 style="padding-left:100px">Skills</h1>
-
-    ${set1.map((val)=>{
-      return `${val}`  
-    })}
     
+    <div style="text-align: center;" class="col-6">
+    <h3 style="">Skills</h3>
+    <div class="col" style="padding-right:400px">${set1.map((val)=>{
+      return `${val}`
+    })}</div>
+    
+    <h3 style="padding-top:20px">Experience</h3>
+    
+    
+
+    ${set2.map((val,index)=>{
+      
+      return ` <textarea rows="2" cols="25"  style="border:0px;text-align: center;resize:none;font-size:14px">${values.title[index]}(${values.startDate[index].substr(0,7)}--${values.endDate[index].substr(0,7)})</textarea>
+      <textarea rows="4"  style="border:0px;text-align: center;font-size:11px" cols="55">${values.description[index]}</textarea>`
+    })}
+
     </div> 
 
     </div> 

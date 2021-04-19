@@ -19,14 +19,14 @@ const Form =  ({route,navigation})=>{
   const [skills,setSkills]= useState([])
   const [error,setError]= useState("")
   const [current , setCurrent] = useState("")
-  const [dateFromS, setDateFromS] = useState(new Date())
-  const [dateToS, setDateToS] = useState(new Date())
-  const [dateFromH, setDateFromH] = useState(new Date())
-  const [dateToH, setDateToH] = useState(new Date())
-  const [dateFromU, setDateFromU] = useState(new Date())
-  const [dateToU, setDateToU] = useState(new Date())
-  const [dateFromM, setDateFromM] = useState(new Date())
-  const [dateToM, setDateToM] = useState(new Date())
+  const [dateFromS, setDateFromS] = useState("")
+  const [dateToS, setDateToS] = useState("")
+  const [dateFromH, setDateFromH] = useState("")
+  const [dateToH, setDateToH] = useState("")
+  const [dateFromU, setDateFromU] = useState("")
+  const [dateToU, setDateToU] = useState("")
+  const [dateFromM, setDateFromM] = useState("")
+  const [dateToM, setDateToM] = useState("")
 
   const [values , setValues] = useState({
     title:[],
@@ -54,7 +54,9 @@ const Form =  ({route,navigation})=>{
   };
   const handleConfirm = (date) => {
     const date1 =  JSON.stringify(date)
-    const dateF = date1.split('T')
+    let dateF = date1.split('T')
+    dateF[0]=dateF[0].substr(1,dateF[0].length)
+    
     if(current === "schoolstart"){
      
       setDateFromS(dateF[0])
@@ -124,12 +126,12 @@ const Form =  ({route,navigation})=>{
       <Text h4 >Credentials</Text>
       <View style={styles.input}>
       
-      <Input icon="profile" family="AntDesign" style={styles.textInput} placeholder="Username" onChangeText={(username)=>{setUsername(username)}} placeholderTextColor={theme.COLORS.THEME} />
+      <Input icon="profile" family="AntDesign" style={styles.textInput} placeholder="Username" onChangeText={(username1)=>{const username12=username1.length>1&&username1.charAt(0).toUpperCase() + username1.substr(1,username1.length);setUsername(username12)}} placeholderTextColor={theme.COLORS.THEME} />
      
       </View>
       <View style={styles.input}>
       
-      <Input icon="profile" family="AntDesign" style={styles.textInput} placeholder="Title" onChangeText={(tiles)=>{setTitle(tiles)}} placeholderTextColor={theme.COLORS.THEME} />
+      <Input icon="profile" family="AntDesign" style={styles.textInput} placeholder="Title" onChangeText={(tiles)=>{setTitle(tiles.toUpperCase() )}} placeholderTextColor={theme.COLORS.THEME} />
      
       </View>
       <View style={styles.input}>
@@ -140,7 +142,7 @@ const Form =  ({route,navigation})=>{
       <Input icon="phone" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Phone Number" type="numeric" onChangeText={(phon)=>{setPhone(phon)}} />
       </View>
       <View style={styles.input}>
-      <Input icon="phone" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Address" onChangeText={(add1)=>{setAddress(add1)}} />
+      <Input icon="address" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Address" onChangeText={(add1)=>{setAddress(add1)}} />
       </View>
       <View style={styles.input}>
       <Input icon="text-document" onChangeText={(des)=>{setDescription(des)}} family="Entypo" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Description" style={styles.textInput} multiline={true} numberOfLines={4}/>
@@ -184,7 +186,7 @@ const Form =  ({route,navigation})=>{
       {/* <View style={{flexjustifyContent:'center',paddingLeft:0}}> */}
       <Block center>
         {/* <Text>{JSON.stringify(values)}</Text> */}
-      <Button onPress={(e)=>navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills})} color='#50C7C7' round>
+      <Button onPress={(e)=>navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills,values})} color='#50C7C7' round>
         Submit
       </Button>
       </Block>

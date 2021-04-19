@@ -34,7 +34,8 @@ const SignIn = ({navigation})=>{
           if(user){
             navigation.navigate('Form')
           }
-          setLoading(false)
+          else{ setLoading(false)}
+         
           
         })
       } catch (e) {
@@ -170,7 +171,7 @@ const SignIn = ({navigation})=>{
       <Block center>
       {loading&&<ActivityIndicator size="large" color="#00ff00" />}
       <Button onPress={(e)=>handleSignIn(e)} color='#50C7C7' round>
-      SignUp
+      SignIn
       </Button>
       </Block>
       <Block right>

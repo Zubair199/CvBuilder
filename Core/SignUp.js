@@ -29,6 +29,7 @@ const SignUp = ({navigation})=>{
           if(user){
             navigation.navigate('Form')
           }
+          else{ setLoading(false)}
           
         })
       } catch (e) {

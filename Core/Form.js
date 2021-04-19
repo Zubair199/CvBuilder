@@ -1,9 +1,11 @@
 import React,{useState} from 'react'
-import { StyleSheet, View,TouchableOpacity,ScrollView,Image } from 'react-native';
-import { Input,theme,withGalio,GalioProvider, Block,Text,Icon,Button } from 'galio-framework';
+import { StyleSheet, View,ScrollView,Image } from 'react-native';
+import { Input,theme, Block,Text,Button } from 'galio-framework';
+import RadioButtonRN from 'radio-buttons-react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
+import Icon from 'react-native-vector-icons/FontAwesome';
 const Form =  ({route,navigation})=>{
 
   const [email,setEmail]= useState("")
@@ -34,13 +36,24 @@ const Form =  ({route,navigation})=>{
     startDate:[],
     endDate:[]
   })
-
+  const [layout,setLayout] = useState("ESP")
   const [currentTitle,setCurT] = useState("")
   const [currentDes,setCurD] = useState("")
   const [currentStart,setCurS] = useState("")
   const [currentEnd,setCurE] = useState("")
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
- 
+  const data = [
+    {
+      label: 'Education,skills,experience/projects',
+      accessibilityLabel: 'ESP'
+     },
+     {
+      label: 'Experience/projects,skills,Education',
+      accessibilityLabel: 'PSE'
+     }
+    ];
+    
+   
 
   const showDatePicker = (val) => {
    console.log(val)
@@ -185,28 +198,40 @@ const Form =  ({route,navigation})=>{
       <Input icon="text-document" family="Entypo" onChangeText={(t)=>{setCurT(t)}} value={currentTitle} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Title" style={styles.textInput} multiline={true} numberOfLines={1}/>
       </View>
       <View style={styles.input}>     
-      <Input icon="text-document" family="Entypo" onChangeText={(d)=>{setCurD(d)}} value={currentDes} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="description" style={styles.textInput} multiline={true} numberOfLines={1}/>
+      <Input help="required" icon="text-document" family="Entypo" onChangeText={(d)=>{setCurD(d)}} value={currentDes} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="description" style={styles.textInput} multiline={true} numberOfLines={1}/>
       </View>
       <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("projects")} >Start Date</Button><Button onPress={()=>showDatePicker("projecte")}>End Date</Button></View>
       <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>handleExperience()} color='info' >Add</Button></View>
 
-
-
-      {/* <View style={{flexjustifyContent:'center',paddingLeft:0}}> */}
+      <Text h4>Layouts!</Text>
+      <RadioButtonRN
+        data={data}
+        selectedBtn={(e) =>{setLayout(e.accessibilityLabel);console.log(e.accessibilityLabel)}}
+        icon={
+          <Icon
+            name="check-circle"
+            size={25}
+            color="#2c9dd1"
+          />
+        }
+        initial={1}
+      />
+      
       <Block center>
-        {/* <Text>{JSON.stringify(values)}</Text> */}
+        
+      
       <Button onPress={(e)=>{
         if(skills.length==0||email==""||title==""||username==""||description==""||phone==""||highSchool==""||school==""||dateFromS==""||dateFromS==""||dateToH==""||dateFromH==""||values.title.length==0||address==""){
           
           Toast.show({
             text1: "Error",
-            text2: email==""?"Please Enter Email":title==""?"Please Enter Title":username==""?"UserName Cannot be Empty":description==""?"Please Enter The Description":highSchool==""?"Please Enter HighSchool Name":school==""?"Please Enter School Name":dateFromS==""?"Start-Date not Set For School":dateToS==""?"End-Date not Set For School":dateFromH==""?"Start-Date not Set For High-School":dateToH==""?"End-Date not Set For High-School":address==""?"Please Enter Address":skills.length==0?"Please Enter Your Skills":"",
+            text2: email==""?"Please Enter Email":title==""?"Please Enter Title":username==""?"UserName Cannot be Empty":description==""?"Please Enter The Description":highSchool==""?"Please Enter HighSchool Name":school==""?"Please Enter School Name":dateFromS==""?"Start-Date not Set For School":dateToS==""?"End-Date not Set For School":dateFromH==""?"Start-Date not Set For High-School":dateToH==""?"End-Date not Set For High-School":address==""?"Please Enter Address":skills.length==0?"Please Enter Your Skills":values.title.length<1?"Please Enter A project or Experience":"",
             type: 'error'
           })
 
         }
         else{
-          navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,masters,school,dateFromS,dateToS,dateToU,dateFromU,dateToM,dateFromM,dateToH,dateFromH,skills,values})
+          navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,masters,school,dateFromS,dateToS,dateToU,dateFromU,dateToM,dateFromM,dateToH,dateFromH,skills,values,layout})
         }
       }
         

@@ -8,8 +8,8 @@ import * as FileSystem from 'expo-file-system';
 const Pdf = ({route,navigation})=>{
 
  
-  const {email,title,username ,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills,values,masters,dateToM,dateFromM} = route.params;
-  console.log(values)
+  const {email,title,username ,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills,values,masters,dateToM,dateFromM,layout} = route.params;
+  console.log(layout)
   let title1 =""
   let tname1 = ""
   let time1s=""
@@ -172,7 +172,9 @@ const Pdf = ({route,navigation})=>{
  
 
   console.log(set2)
-  const htmlContent = `
+  let htmlContent
+  if(layout=="ESP"){
+    htmlContent=  `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -260,7 +262,7 @@ const Pdf = ({route,navigation})=>{
     ${set2.map((val,index)=>{
       
       return ` <textarea rows="2" cols="25"  style="border:0px;text-align: center;resize:none;font-size:14px">${values.title[index]}(${values.startDate[index].substr(0,7)}--${values.endDate[index].substr(0,7)})</textarea>
-      <textarea rows="4"  style="border:0px;text-align: center;font-size:11px" cols="55">${values.description[index]}</textarea>`
+      <textarea rows="4"  style="border:0px;text-align: center;font-size:11px" cols="45">${values.description[index]}</textarea>`
     })}
 
     </div> 
@@ -285,6 +287,123 @@ const Pdf = ({route,navigation})=>{
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
     </html>
 `;
+  }
+  else{
+    htmlContent=  `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+       
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <title>Pdf Content</title>
+        <style>
+.vl {
+  border-left: 6px solid grey;
+  height: 500px;
+  position: absolute;
+  left: 45%;
+  margin-left: -3px;
+  top: 220px;
+}
+</style>
+    </head>
+    <body>
+  
+    <div style="border-style:solid;border-width: 0.4px;"  class="container">
+  <div class="row">
+    <div class="col">
+     <h1 style="">${username}</h1>
+    </div>
+    <div class="col">
+    <h6 style="color:grey;text-align:right;padding:8px">${email}<span style="padding-top:0px" class="material-icons">email</span></h6>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col">
+     <h4 style="color:DodgerBlue;">${title}</h4>
+    </div>
+    <div class="col">
+    <h6 style="color:grey;text-align:right;padding:8px">${phone}<span class="material-icons">
+    phone_iphone
+    </span></h6>
+    </div>
+   
+  </div>
+  <div class="row">
+    <div class="col">
+    <textarea rows="3"  style="border:0px" cols="35">${description}</textarea>
+    </div> 
+    <div class="col">
+    <h6 style="color:grey;text-align:right;padding:8px">${address}&nbsp;&nbsp<span class="material-icons">
+    home
+    </span></h6>
+    </div> 
+  
+    
+    <div style="border-style:solid;border-width: 0.4px 0px 0px 0px;" class="row">
+    <div style="border-style:solid;border-width: 0px 0.4px 0px 0px;text-align:center" class="col">
+    <h3 ><b><u>Experience/Project</u></b></h3>
+    ${set2.map((val,index)=>{
+      
+      return ` <textarea rows="2" cols="25"  style="border:0px;text-align: center;resize:none;font-size:14px">${values.title[index]}(${values.startDate[index].substr(0,7)}--${values.endDate[index].substr(0,7)})</textarea>
+      <textarea rows="4"  style="border:0px;text-align: center;font-size:11px;resize:none" cols="45">${values.description[index]}</textarea>`
+    })}
+    
+
+    </div>
+    
+    <div style="text-align: center;" class="col-6">
+    <h3 style="">Skills</h3>
+    <div class="col" style="padding-right:400px">${set1.map((val)=>{
+      return `${val.substr(0)}`
+    })}</div>
+    
+    
+    
+    <h3 style="padding-top:20px" ><b><u>Education</u></b></h3>
+    <h2 style="color:blue;padding-top:${title1?`20px`:`0px`}">${title1}</h2>
+    <h4>${tname1}</h4>
+    <h5>${time1s.substr(0,9)}${time1e.substr(0,9)}</h5>
+    <h2 style="color:blue;padding-top:20px">${title2}</h2>
+    <h4>${tname2}</h4>
+    <h5>${time2s}${time2e}</h5>
+    <h2 style="color:blue;padding-top:20px">${title3}</h2>
+    <h4>${tname3}</h4>
+    <h5>${time3s}${time3e}</h5>
+    <h2 style="color:blue;padding-top:20px">${title4}</h2>
+    <h4>${tname4}</h4>
+    <h5>${time4s}${time4e}</h5>
+
+    
+
+    </div> 
+
+    </div> 
+
+
+
+
+  </div>
+  
+
+
+
+
+
+  
+ 
+       
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+    </html>
+`;
+  }
+ 
 
 const createPDF = async (html) => {
   try {

@@ -1,4 +1,4 @@
-import axios from 'react-native-axios'
+import axios from 'axios'
 
   export const signIn= (email,password)=>{ 
     const user= {
@@ -6,7 +6,11 @@ import axios from 'react-native-axios'
       password:password
     
     }
-   return axios.post('http://192.168.100.11:8088/api/signin',user)
+    const opt = {
+      timeout: 4000,
+    }
+    const axiosIns = axios.create(opt)
+    return axiosIns.post('http://192.168.100.11:8088/api/signin',user)
   }
   export const signUp= (email,password,username)=>{ 
    const user= {
@@ -14,6 +18,10 @@ import axios from 'react-native-axios'
      password:password,
      username:username
    }
-   return axios.post('http://192.168.100.11:8088/api/signup',user)
+   const opt = {
+    timeout: 4000,
+  }
+  const axiosIns = axios.create(opt)
+   return axiosIns.post('http://192.168.100.11:8088/api/signup',user)
   }
 

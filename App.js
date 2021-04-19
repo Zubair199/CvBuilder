@@ -1,5 +1,6 @@
 import React,{Fragment,useEffect,useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+
 import { Button } from 'galio-framework';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native'
@@ -60,10 +61,10 @@ export default function App() {
   
     },[])
     
-
+   
   return (
-    
-       <NavigationContainer>  
+
+       <NavigationContainer >  
        <Stack.Navigator>
        
         <Stack.Screen options={{title:"Home Page"}} name="Home" component={Home}/>

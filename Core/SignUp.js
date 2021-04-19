@@ -3,6 +3,7 @@ import { StyleSheet, View,TouchableOpacity } from 'react-native';
 import { Input,theme,withGalio,GalioProvider, Block,Text,Icon,Button } from 'galio-framework';
 import Toast from 'react-native-toast-message';
 import {signUp} from '../Api/CoreApis'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const SignUp = ({navigation})=>{
 
   const [email,setEmail]= useState("")
@@ -10,7 +11,7 @@ const SignUp = ({navigation})=>{
   const [password,setPassword]= useState("")
   const [error,setError]= useState("")
   const [success,setSuccess]= useState("")
-
+  const [loading,setLoading] = useState(false)
   const showToast = (text1,type,text2)=>{
 
     Toast.show({
@@ -21,6 +22,20 @@ const SignUp = ({navigation})=>{
   }
 
   useEffect(()=>{
+    const unsubscribe = navigation.addListener('focus',() => {
+      try {
+         AsyncStorage.getItem('user').then(user=>{
+          console.log(user)
+          if(user){
+            navigation.navigate('Form')
+          }
+          
+        })
+      } catch (e) {
+        console.log(e)
+        setLoading(false)
+      }
+    });
     if(error===""){
       console.log()
     }
@@ -31,9 +46,9 @@ const SignUp = ({navigation})=>{
         type: 'error'
       })
     }
-   
+    return unsubscribe
   
-  },[error])
+  },[error,navigation])
   useEffect(()=>{
     if(success===""){
       console.log()
@@ -50,26 +65,59 @@ const SignUp = ({navigation})=>{
   },[success])
 
   const handleSignUp = (event)=>{
-  
+      setLoading(true)
      if(username ==="") {
       
       showToast("Error","error","Please Enter Username")
+      setLoading(false)
     }
     else if(email.trim() === "") {
      
       showToast("Error","error","Please Enter Email Address")
-    } else if(password ==="") {
-      
-      showToast("Error","error","Please Enter Password")
+    }   else if(email!==""){
+      if(ValidateEmail(email)){
+        if(password ===""){
+          setLoading(false)
+          showToast("Error","error","Please Enter Password")
+        }
+        else{
+        
+          
+          signUp(email,password,username).then(async res=>{setSuccess(`Successfully Created User ${res.data.user.username}!`); try {
+            await AsyncStorage.setItem('user', JSON.stringify(res.data.user))
+          } catch (e) {
+            console.log(e);setLoading(true)
+          };navigation.navigate('Form',{username:username,email:email})}).catch(err=>{if(err.response==undefined){ Toast.show({
+            text1:'Error',
+            text2: "Make Sure you are Connected to the Server",
+            type: 'error'
+          })}else{setError(err.response.data.error);setLoading(true)} })
+          
+        }
+      }
+    
+       else{
+        Toast.show({
+          text1:'Error',
+          text2: "Please Enter A Valid Email",
+          type: 'error'
+        })
+       }
     }
-    else{
-      
-     signUp(email,password,username).then(res=>{setSuccess(`Successfully Created User ${res.data.user.username}!`);navigation.navigate('Form',{username:username,email:email})}).catch(err=>{console.log(err.response.data);setError(err.response.data.error); })
-    }
+   
     //
 
     
   }
+  function ValidateEmail(mail) 
+{
+ if (/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(mail))
+  {
+    return (true)
+  }
+  
+    return (false)
+}
   return(
 
     <View style={styles.container}>
@@ -78,20 +126,21 @@ const SignUp = ({navigation})=>{
       <View style={styles.footer}>
       <View style={styles.input}>
       <Icon name="profile" family="AntDesign" size={55} style={{paddingRight:10}}/>
-      <Input  placeholder="Username" onChangeText={(username)=>{setUsername(username)}} placeholderTextColor={theme.COLORS.THEME} style={styles.textInput}/>
+      <Input rounded icon="email" family="Entypo" placeholder="Username" onChangeText={(username)=>{setUsername(username)}} placeholderTextColor={theme.COLORS.THEME} style={styles.textInput}/>
      
       </View>
       <View style={styles.input}>
       <Icon name="email" family="Entypo" size={55} style={{paddingRight:10}} />
-      <Input  style={styles.textInput} placeholderTextColor={theme.COLORS.THEME} placeholder="Email" type="email-address" onChangeText={(email)=>{setEmail(email)}} />
+      <Input rounded icon="profile" family="AntDesign" style={styles.textInput} placeholderTextColor={theme.COLORS.THEME} placeholder="Email" type="email-address" onChangeText={(email)=>{setEmail(email)}} />
       
       </View>
       <View style={styles.input}>
       <Icon name="fingerprint" family="Entypo" size={55} style={{paddingRight:10}} />
-      <Input password  viewPass placeholder="Password" placeholderTextColor={theme.COLORS.THEME} onChangeText={(password)=>{setPassword(password)}} style={styles.textInput}/>
+      <Input password rounded icon="lock" family="Entypo" viewPass placeholder="Password" placeholderTextColor={theme.COLORS.THEME} onChangeText={(password)=>{setPassword(password)}} style={styles.textInput}/>
       </View>
       <View style={{justifyContent:'center',paddingLeft:30}}>
       <Block center>
+      {loading&&<ActivityIndicator size="large" color="#00ff00" />}
       <Button onPress={(e)=>handleSignUp(e)} color='#50C7C7' round>
         SignUp
       </Button>

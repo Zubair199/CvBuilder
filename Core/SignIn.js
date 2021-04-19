@@ -6,11 +6,22 @@ import Toast from 'react-native-toast-message';
 import {signIn} from '../Api/CoreApis'
 const SignIn = ({navigation})=>{
 
+  try {
+    AsyncStorage.getItem('user').then(user=>{
+      if(user){
+        navigation.navigate('Form')
+      }
+      
+    })
+  } catch (e) {
+    console.log(e)
+  }
+
   const [email,setEmail]= useState("")
   const [password,setPassword]= useState("")
   const [error,setError]= useState("")
   const [success,setSuccess]= useState("")
-  const duration = 3000
+  
 
 
 
@@ -65,7 +76,7 @@ const SignIn = ({navigation})=>{
       try {
         await AsyncStorage.setItem('user', JSON.stringify(res.data.user))
       } catch (e) {
-        console.log(err)
+        console.log(e)
       }
        setSuccess(`Successfully Logged In With ${res.data.user.username}!`);navigation.navigate('Form')})
      .catch(err=>{setError(err.response.data.error)})

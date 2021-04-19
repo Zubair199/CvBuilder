@@ -1,14 +1,14 @@
-import React,{useState} from 'react'
-import { StyleSheet, View,TouchableOpacity,ScrollView,Image, Dimensions } from 'react-native';
+import React,{useState,useEffect} from 'react'
+import {StyleSheet, View,ActivityIndicator } from 'react-native';
 import * as IntentLauncher from 'expo-intent-launcher';
-import { Input,theme,withGalio,GalioProvider, Block,Text,Icon,Button } from 'galio-framework';
+import { Text } from 'galio-framework';
 import * as Print from 'expo-print'
 import * as FileSystem from 'expo-file-system';
-import * as MediaLibrary from "expo-media-library";
-import * as Sharing from "expo-sharing";
+
 const Pdf = ({route,navigation})=>{
 
-  const {email,title,username ,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills,values} = route.params;
+ 
+  const {email,title,username ,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills,values,masters,dateToM,dateFromM} = route.params;
   console.log(values)
   let title1 =""
   let tname1 = ""
@@ -22,7 +22,31 @@ const Pdf = ({route,navigation})=>{
   let tname3 = ""
   let time3s=""
   let time3e=""
-  if(university!==""&&highSchool!==""){
+  let title4 =""
+  let tname4 = ""
+  let time4s=""
+  let time4e=""
+  if(masters!==""){
+    console.log(masters)
+    title1 ="MASTERS:"
+    tname1 = masters
+    time1s="("+dateFromM.toString().substr(0,7)+"/"
+    time1e=dateToM.toString().substr(0,7)+")"
+    title2 ="UNIVERSITY:"
+    tname2 = university
+    time2s="("+dateFromU.toString().substr(0,7)+"/"
+    time2e=dateToU.toString().substr(0,7)+")"
+    title3 ="HIGH-SCHOOL:"
+    tname3 = highSchool
+    time3s="("+dateFromH.toString().substr(0,7)+"/"
+    time3e=dateToH.toString().substr(0,7)+")"
+    title4 ="SCHOOL:"
+    tname4 = school
+    time4s="("+dateFromS.toString().substr(0,7)+"/"
+    time4e=dateToS.toString().substr(0,7)+")"
+    console.log(time2s,time2e)
+  }
+  else if(university!==""&&highSchool!==""){
     console.log(university)
     title1 ="UNIVERSITY:"
     tname1 = university
@@ -194,7 +218,7 @@ const Pdf = ({route,navigation})=>{
   </div>
   <div class="row">
     <div class="col">
-    <textarea rows="3"  style="border:0px" cols="45">${description}</textarea>
+    <textarea rows="3"  style="border:0px" cols="35">${description}</textarea>
     </div> 
     <div class="col">
     <h6 style="color:grey;text-align:right;padding:8px">${address}&nbsp;&nbsp<span class="material-icons">
@@ -215,6 +239,9 @@ const Pdf = ({route,navigation})=>{
     <h2 style="color:blue;padding-top:20px">${title3}</h2>
     <h4>${tname3}</h4>
     <h5>${time3s}${time3e}</h5>
+    <h2 style="color:blue;padding-top:20px">${title4}</h2>
+    <h4>${tname4}</h4>
+    <h5>${time4s}${time4e}</h5>
 
     
 
@@ -226,7 +253,7 @@ const Pdf = ({route,navigation})=>{
       return `${val}`
     })}</div>
     
-    <h3 style="padding-top:20px">Experience</h3>
+    <h3 style="padding-top:20px">Experience/Work-History</h3>
     
     
 
@@ -261,44 +288,34 @@ const Pdf = ({route,navigation})=>{
 
 const createPDF = async (html) => {
   try {
-      const { uri } = await Print.printToFileAsync({ html });
-        const permission = await MediaLibrary.requestPermissionsAsync();
-        if (permission.granted) {
-        //await MediaLibrary.createAssetAsync(uri);
+      const { uri } = await Print.printToFileAsync({ html });     
         return uri
-        }
-      
   }
       catch (err) {
       console.error(err);
   }
 };
-const filePa = FileSystem.documentDirectory+"zubair/project.pdf"
 
-//FileSystem.makeDirectoryAsync(FileSystem.documentDirectory+"zubair").then(res=>{console.log(res)}).catch(err=>console.log(err))
-console.log(filePa)
 
-const [ur,setUr]= useState("")
+FileSystem.makeDirectoryAsync(FileSystem.documentDirectory+username,{intermediates:true}).then(res=>{console.log(res)}).catch(err=>console.log(err))
+
+
+
 
 createPDF(htmlContent).then(data=>{
 
-  //setUr(data);
-  const obj1 = {
-    from:data,
-    to:filePa
-  }
-  console.log(data)
+ 
+ 
   
-  //FileSystem.copyAsync(obj1).then(data1=>{console.log(data1)}).catch(err=>{console.log(err)})
+  
   FileSystem.getContentUriAsync(data).then(cUri => {
     console.log(cUri);
     IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
       data: cUri,
       flags: 1,
-    });
+    }).then(data1=>{console.log(data1)});
   });
-  //FileSystem.readDirectoryAsync(filePa).then(res=>{console.log(res)})
-  //FileSystem.readAsStringAsync(filePa).then(data1=>{console.log(data1)})
+  
   
   
 
@@ -317,14 +334,23 @@ createPDF(htmlContent).then(data=>{
 //     console.error(error);
 //   });
   return(
-    <View>
-      <Text h1>loading</Text>
+    <View style={[styles.container]}>
+      <Text h4>On This Screen?Press the Back Button on Your Phone</Text>
+
+      
+    <ActivityIndicator size="large" color="#00ff00" />
    
     </View>
   )
 
 }
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center"
+  },
+ 
+});
 
 export default Pdf
 

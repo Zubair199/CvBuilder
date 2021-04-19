@@ -100,6 +100,14 @@ const Form =  ({route,navigation})=>{
   };
   const handleExperience = ()=>{
     let val = {...values}
+      if(currentStart==""||currentEnd==""||currentTitle==""||currentDes==""){
+        Toast.show({
+          text1: "Error",
+          text2: currentStart==""?"Start-Date not Set":currentEnd==""?"End-Date not Set":currentTitle==""?"Title Cannot be Empty":currentDes==""?"Please Enter The Description":"",
+          type: 'error'
+        })
+      }
+      else{
       val.startDate.push(currentStart)
       val.endDate.push(currentEnd)
       val.title.push(currentTitle)
@@ -114,6 +122,7 @@ const Form =  ({route,navigation})=>{
       setCurS("")
       setCurT("")
       setCurE("")
+    }
   }
   
   return(
@@ -126,12 +135,12 @@ const Form =  ({route,navigation})=>{
       <Text h4 >Credentials</Text>
       <View style={styles.input}>
       
-      <Input icon="profile" family="AntDesign" style={styles.textInput} placeholder="Username" onChangeText={(username1)=>{const username12=username1.length>1&&username1.charAt(0).toUpperCase() + username1.substr(1,username1.length);setUsername(username12)}} placeholderTextColor={theme.COLORS.THEME} />
+      <Input icon="profile" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholder="Username" onChangeText={(username1)=>{const username12=username1.length>1&&username1.charAt(0).toUpperCase() + username1.substr(1,username1.length);setUsername(username12)}} placeholderTextColor={theme.COLORS.THEME} />
      
       </View>
       <View style={styles.input}>
       
-      <Input icon="profile" family="AntDesign" style={styles.textInput} placeholder="Title" onChangeText={(tiles)=>{setTitle(tiles.toUpperCase() )}} placeholderTextColor={theme.COLORS.THEME} />
+      <Input icon="profile" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholder="Title" onChangeText={(tiles)=>{setTitle(tiles.toUpperCase() )}} placeholderTextColor={theme.COLORS.THEME} />
      
       </View>
       <View style={styles.input}>
@@ -186,7 +195,22 @@ const Form =  ({route,navigation})=>{
       {/* <View style={{flexjustifyContent:'center',paddingLeft:0}}> */}
       <Block center>
         {/* <Text>{JSON.stringify(values)}</Text> */}
-      <Button onPress={(e)=>navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills,values})} color='#50C7C7' round>
+      <Button onPress={(e)=>{
+        if(skills.length==0||email==""||title==""||username==""||description==""||phone==""||highSchool==""||school==""||dateFromS==""||dateFromS==""||dateToH==""||dateFromH==""||values.title.length==0||address==""){
+          
+          Toast.show({
+            text1: "Error",
+            text2: email==""?"Please Enter Email":title==""?"Please Enter Title":username==""?"UserName Cannot be Empty":description==""?"Please Enter The Description":highSchool==""?"Please Enter HighSchool Name":school==""?"Please Enter School Name":dateFromS==""?"Start-Date not Set For School":dateToS==""?"End-Date not Set For School":dateFromH==""?"Start-Date not Set For High-School":dateToH==""?"End-Date not Set For High-School":address==""?"Please Enter Address":skills.length==0?"Please Enter Your Skills":"",
+            type: 'error'
+          })
+
+        }
+        else{
+          navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,masters,school,dateFromS,dateToS,dateToU,dateFromU,dateToM,dateFromM,dateToH,dateFromH,skills,values})
+        }
+      }
+        
+        } color='#50C7C7' round>
         Submit
       </Button>
       </Block>

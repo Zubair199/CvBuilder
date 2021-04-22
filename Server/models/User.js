@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
   },
   salt:String,
  
+
+
+
+ 
   
 
   

@@ -1,3 +1,4 @@
+// skills empty array pls look over ??
 import React,{useState} from 'react'
 import { StyleSheet, View,ScrollView,Image } from 'react-native';
 import { Input,theme, Block,Text,Button } from 'galio-framework';
@@ -5,6 +6,7 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
+import {Resume} from '../Api/CoreApis'
 import Icon from 'react-native-vector-icons/FontAwesome';
 const Form =  ({route,navigation})=>{
 
@@ -71,33 +73,95 @@ const Form =  ({route,navigation})=>{
     dateF[0]=dateF[0].substr(1,dateF[0].length)
     
     if(current === "schoolstart"){
-     
       setDateFromS(dateF[0])
+      if(dateToS!=="" && school!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "School Form Filled",
+          type: 'success'
+        })
+      }
+     
     }
     else if(current === "schoolend"){
       setDateToS(dateF[0])
+      if(dateFromS!==""&& school!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "School Form Filled",
+          type: 'success'
+        })
+
+      }
+     
       console.log(dateFromS , dateToS , school)
     }
     else if(current === "highschoolstart"){
-     
       setDateFromH(dateF[0])
+      if(dateToH!=="" && highSchool!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "HighSchool Form Filled",
+          type: 'success'
+        })
+      }
+      
     }
     else if(current === "highschoolend"){
       setDateToH(dateF[0])
+      if( dateFromH!==""&& highSchool!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "HighSchool Form Filled",
+          type: 'success'
+        })
+      }
+
+     
     }
     else if(current === "unistart"){
-     
       setDateFromU(dateF[0])
+      if(dateToU!=="" && university!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "University Form Filled",
+          type: 'success'
+        })
+      }
+     
     }
     else if(current === "uniend"){
       setDateToU(dateF[0])
+      if( dateFromU!==""&& university!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "University Form Filled",
+          type: 'success'
+        })
+      }
+      
     }
     else if(current === "masterstart"){
-     
       setDateFromM(dateF[0])
+      if(dateToM!==""  && masters!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "Masters Form Filled",
+          type: 'success'
+        })
+      }
+     
     }
     else if(current === "masterend"){
       setDateToM(dateF[0])
+      if( dateFromM!==""&& masters!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "Masters Form Filled",
+          type: 'success'
+        })
+      }
+     
     }
     else if(current === "projects"){
       // let val = {...values}
@@ -143,36 +207,42 @@ const Form =  ({route,navigation})=>{
     <View style={styles.container}>
 
       <View style={styles.header}><Image source={require('../assets/logo/resume.png')} style={{ width: 100, height: 100,borderTopLeftRadius:50,borderTopRightRadius:50,borderBottomRightRadius:50,borderBottomLeftRadius:50 }}/>
-      <Text h4 color="#fff"	>Resume Form</Text></View>
+      <Text  h4 color="#fff"	>Resume Form</Text></View>
       <View style={styles.footer}>
       <Text h4 >Credentials</Text>
       <View style={styles.input}>
       
-      <Input icon="profile" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholder="Username" onChangeText={(username1)=>{const username12=username1.length>1&&username1.charAt(0).toUpperCase() + username1.substr(1,username1.length);setUsername(username12)}} placeholderTextColor={theme.COLORS.THEME} />
+      <Input testID="usernameId" icon="profile" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholder="Username" onChangeText={(username1)=>{const username12=username1.length>1&&username1.charAt(0).toUpperCase() + username1.substr(1,username1.length);setUsername(username12)}} placeholderTextColor={theme.COLORS.THEME} />
      
       </View>
       <View style={styles.input}>
       
-      <Input icon="profile" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholder="Title" onChangeText={(tiles)=>{setTitle(tiles.toUpperCase() )}} placeholderTextColor={theme.COLORS.THEME} />
+      <Input testID="titleId" icon="profile" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholder="Title" onChangeText={(tiles)=>{setTitle(tiles.toUpperCase() )}} placeholderTextColor={theme.COLORS.THEME} />
      
       </View>
       <View style={styles.input}>
       
-      <Input icon="email" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Email" type="email-address" onChangeText={(email1)=>{setEmail(email1)}} />
+      <Input testID="emailId" icon="email" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Email" type="email-address" onChangeText={(email1)=>{setEmail(email1)}} />
       </View>
       <View style={styles.input}>
-      <Input icon="phone" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Phone Number" type="numeric" onChangeText={(phon)=>{setPhone(phon)}} />
+      <Input testID="phoneId" icon="phone" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Phone Number" type="numeric" onChangeText={(phon)=>{setPhone(phon)}} />
       </View>
       <View style={styles.input}>
-      <Input icon="address" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Address" onChangeText={(add1)=>{setAddress(add1)}} />
+      <Input testID="addressId" icon="address" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Address" onChangeText={(add1)=>{setAddress(add1)}} />
       </View>
       <View style={styles.input}>
-      <Input icon="text-document" onChangeText={(des)=>{setDescription(des)}} family="Entypo" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Description" style={styles.textInput} multiline={true} numberOfLines={4}/>
+      <Input testID="descriptionId" icon="text-document" onChangeText={(des)=>{setDescription(des)}} family="Entypo" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Description" style={styles.textInput} multiline={true} numberOfLines={4}/>
       </View>
       <Text h4 >Education</Text>
       <View style={{marginTop:10}}>
      
-      <Input icon="school" onChangeText={(s)=>{setSchool(s)}}  family="FontAwesome5" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="School Name" style={styles.textInput} multiline={true} numberOfLines={2}/>
+      <Input testID="schoolId" icon="school" onChangeText={(s)=>{setSchool(s);if( dateFromS!==""&& dateToS!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "High School Form Filled",
+          type: 'success'
+        })
+      }}}  family="FontAwesome5" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="School Name" style={styles.textInput} multiline={true} numberOfLines={2}/>
       <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("schoolstart")}>Start Date</Button><Button onPress={()=>showDatePicker("schoolend")}>End Date</Button></View>
      
       <DateTimePickerModal
@@ -182,23 +252,41 @@ const Form =  ({route,navigation})=>{
         onCancel={hideDatePicker}
       />
 
-      <Input icon="school" family="FontAwesome5" onChangeText={(h)=>{setHighSchool(h)}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="High School?" style={styles.textInput} multiline={true} numberOfLines={2}/>
+      <Input testID="highSchoolId" icon="school" family="FontAwesome5" onChangeText={(h)=>{setHighSchool(h);if( dateFromH!==""&& dateToH!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "High School Form Filled",
+          type: 'success'
+        })
+      }}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="High School?" style={styles.textInput} multiline={true} numberOfLines={2}/>
       <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("highschoolstart")}>Start Date</Button><Button onPress={()=>showDatePicker("highschoolend")}>End Date</Button></View>  
-      <Input icon="school" family="FontAwesome5" onChangeText={(u)=>{setUniversity(u)}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="University?" style={styles.textInput} multiline={true} numberOfLines={2}/>
+      <Input testID="universityId" icon="school" family="FontAwesome5" onChangeText={(u)=>{setUniversity(u);if( dateFromU!==""&& dateToU!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "University Form Filled",
+          type: 'success'
+        })
+      }}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="University?" style={styles.textInput} multiline={true} numberOfLines={2}/>
       <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("unistart")}>Start Date</Button><Button onPress={()=>showDatePicker("uniend")}>End Date</Button></View>
-      <Input icon="school" family="FontAwesome5" onChangeText={(m)=>{setMasters(m)}} color={theme.COLORS.THEME}  placeholderTextColor={theme.COLORS.THEME}  placeholder="Masters?" style={styles.textInput} multiline={true} numberOfLines={2}/>
+      <Input testID="mastersId" icon="school" family="FontAwesome5" onChangeText={(m)=>{setMasters(m);if( dateFromM!==""&& dateToM!==""){
+        Toast.show({
+          text1: "Success",
+          text2:  "Masters Form Filled",
+          type: 'success'
+        })
+      }}} color={theme.COLORS.THEME}  placeholderTextColor={theme.COLORS.THEME}  placeholder="Masters?" style={styles.textInput} multiline={true} numberOfLines={2}/>
       <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("masterstart")}>Start Date</Button><Button onPress={()=>showDatePicker("masterend")}>End Date</Button></View> 
       </View>
       <Text h4 >Skills( C++ , Java etc)</Text>
       <View style={styles.input}>
-      <Input icon="social-skillshare" family="Foundation" onChangeText={(skill)=>{const sk1 = skill.split(',');setSkills(sk1)}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="C++" style={styles.textInput} multiline={true} numberOfLines={100}/>
+      <Input testID="skillsId" icon="social-skillshare" family="Foundation" onChangeText={(skill)=>{const sk1 = skill.split(',');setSkills(sk1)}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="C++" style={styles.textInput} multiline={true} numberOfLines={100}/>
       </View>
       <Text h4 >Experience?</Text>
       <View style={styles.input}>     
-      <Input icon="text-document" family="Entypo" onChangeText={(t)=>{setCurT(t)}} value={currentTitle} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Title" style={styles.textInput} multiline={true} numberOfLines={1}/>
+      <Input testID="extitleId" icon="text-document" family="Entypo" onChangeText={(t)=>{setCurT(t)}} value={currentTitle} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Title" style={styles.textInput} multiline={true} numberOfLines={1}/>
       </View>
       <View style={styles.input}>     
-      <Input help="required" icon="text-document" family="Entypo" onChangeText={(d)=>{setCurD(d)}} value={currentDes} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="description" style={styles.textInput} multiline={true} numberOfLines={1}/>
+      <Input testID="exdescriptionId"  icon="text-document" family="Entypo" onChangeText={(d)=>{setCurD(d)}} value={currentDes} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="description" style={styles.textInput} multiline={true} numberOfLines={1}/>
       </View>
       <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("projects")} >Start Date</Button><Button onPress={()=>showDatePicker("projecte")}>End Date</Button></View>
       <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>handleExperience()} color='info' >Add</Button></View>
@@ -231,21 +319,49 @@ const Form =  ({route,navigation})=>{
 
         }
         else{
-          navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,masters,school,dateFromS,dateToS,dateToU,dateFromU,dateToM,dateFromM,dateToH,dateFromH,skills,values,layout})
+          let flag =false;
+           if(university!==""||dateToU!==""||dateFromU!==""){
+             if(university==""||dateToU==""||dateFromU==""){
+              Toast.show({
+                text1: "Error",
+                text2:"University Data Incomplete",
+                type: 'error'
+              })
+              flag=true;
+             }
+           }
+           if(masters!==""||dateToM!==""||dateFromM!==""){
+             if(masters==""||dateToM==""||dateFromM==""){
+              Toast.show({
+                text1: "Error",
+                text2:"Masters Data Incomplete",
+                type: 'error'
+              })
+              flag=true;
+             }
+           }
+          if(flag==false)
+           navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,masters,school,dateFromS,dateToS,dateToU,dateFromU,dateToM,dateFromM,dateToH,dateFromH,skills,values,layout})
         }
       }
-        
         } color='#50C7C7' round>
         Submit
       </Button>
+
+     
+      
       </Block>
       
     
       
-      {/* </View> */}
+      
      
       </View>
-      
+       {/* FOR TESTING ON JEST */}
+       <Button style={{display:'none'}} testID="buttonId" onPress={(e)=>{
+           const obj ={email,title,username,description,phone,address,university,highSchool,masters,school,skills,experienceDescription:[currentDes],experienceTitle:[currentTitle]}
+          return Resume(obj)}} color='#50C7C7' round>
+          </Button>
     </View>
     </ScrollView>
   )

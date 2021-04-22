@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { StyleSheet, View ,ActivityIndicator} from 'react-native';
+import { StyleSheet, View ,ActivityIndicator,Button as Button1} from 'react-native';
 import { Input,theme, Block,Text,Icon,Button  } from 'galio-framework';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
@@ -26,6 +26,7 @@ const SignIn = ({navigation})=>{
   }
 
   useEffect(()=>{
+    //////////////////////THIS CODE SHOULD BE COMMENTED WHILE TESTING DUE TO LIMITATIONS OF React Testing library for rendering //////////////
     const unsubscribe = navigation.addListener('focus',() => {
     
       try {
@@ -41,10 +42,11 @@ const SignIn = ({navigation})=>{
       } catch (e) {
         console.log(e)
       }
+
     });
-   
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
     if(error===""&&success===""){
-      
+      // do nothing
     }
     else if(error!==""){
       Toast.show({
@@ -53,23 +55,27 @@ const SignIn = ({navigation})=>{
         type: 'error'
       })
     }
-    return unsubscribe
+    
+      return unsubscribe
    
   
   },[error,navigation])
   useEffect(()=>{
+   
     try {
       AsyncStorage.getItem('user').then(user=>{
         if(user){
+          
           navigation.navigate('Form')
         }
         
       })
     } catch (e) {
+      
       console.log(e)
     }
-    if(success===""){
-      console.log()
+    if(success===""){ 
+      console.log("done") 
     }
     else if(success!==""){
       Toast.show({
@@ -81,7 +87,27 @@ const SignIn = ({navigation})=>{
    
 
   },[success])
-  const handleSignIn =  (event)=>{
+
+  const handleSignInTest =(event)=>{
+   
+    if (email.trim() === "") {
+     
+      
+      return false
+    }
+    else if(email!==""){
+      if(ValidateEmail(email)){
+        if(password ===""){
+          return false
+         
+        }
+        else{
+        return signIn(email,password)
+  }
+}
+    }
+  }
+  const handleSignIn = async (event)=>{
     setLoading(true)
     if (email.trim() === "") {
      
@@ -95,21 +121,40 @@ const SignIn = ({navigation})=>{
           setLoading(false)
         }
         else{
-          signIn(email,password)
-          .then(async(res)=>{
-           try {
-             await AsyncStorage.setItem('user', JSON.stringify(res.data.user))
-           } catch (e) {
-             console.log(e)
-           }
-           
-            setSuccess(`Successfully Logged In With ${res.data.user.username}!`);navigation.navigate('Form')})
-          .catch(err=>{if(err.response==undefined){Toast.show({
-            text1:'Error',
-            text2: "Make Sure you are Connected to the Server",
-            type: 'error'
-          });setLoading(false)}else{setError(err.response.data.error);setLoading(false)} })
+          
+          
+            // FOR TESTING USE THIS {
+     //             return signIn(email,password)
+            //}
+            // For Normal App Operations use this 
 
+             signIn(email,password).then(async(res)=>{
+            try {
+              await AsyncStorage.setItem('user', JSON.stringify(res.data.user))
+            } catch (e) {
+              console.log(e)
+            }
+           
+             setSuccess(`Successfully Logged In With ${res.data.user.username}!`);
+             navigation.navigate('Form')
+             
+            })
+
+           .catch(err=>{
+             if(err.response==undefined){
+                Toast.show({
+                text1:'Error',
+                text2: "Make Sure you are Connected to the Server",
+                type: 'error'
+                })
+               setLoading(false)
+            }
+            else{setError(err.response.data.error);setLoading(false)}
+            return err
+          })
+            
+          
+        
 
         }
       }
@@ -121,21 +166,7 @@ const SignIn = ({navigation})=>{
           type: 'error'
         })
        }
-    } else if(password ==="") {
-      
-      showToast("Error","error","Please Enter Password")
-    }
-    else{
-     signIn(email,password)
-     .then(async(res)=>{
-      try {
-        await AsyncStorage.setItem('user', JSON.stringify(res.data.user))
-      } catch (e) {
-        console.log(e)
-      }
-       setSuccess(`Successfully Logged In With ${res.data.user.username}!`);navigation.navigate('Form')})
-     .catch(err=>{setError(err.response.data.error)})
-    }
+    } 
   }
 
   function ValidateEmail(mail) 
@@ -161,16 +192,16 @@ const SignIn = ({navigation})=>{
       <View style={styles.footer}>
       <View style={styles.input}>
       <Icon name="profile" family="AntDesign" size={55} style={{paddingRight:10}} />
-      <Input autoFocus placeholderTextColor={theme.COLORS.THEME} icon="email" family="Entypo" placeholder="Email" rounded type="email-address" onChangeText={(email1)=>{setEmail(email1)}} style={styles.textInput}/>
+      <Input testID="emailId" autoFocus placeholderTextColor={theme.COLORS.THEME} icon="email" family="Entypo" placeholder="Email" rounded type="email-address" onChangeText={(email1)=>{setEmail(email1)}} style={styles.textInput}/>
       </View>
       <View style={styles.input}>
       <Icon name="fingerprint" family="Entypo" size={55} style={{paddingRight:10}} />
-      <Input viewPass rounded icon="lock" family="Entypo"  placeholderTextColor={theme.COLORS.THEME} placeholder="Password" password onChangeText={(password1)=>{setPassword(password1)}} style={styles.textInput}/>
+      <Input testID="passwordId" viewPass rounded icon="lock" family="Entypo"  placeholderTextColor={theme.COLORS.THEME} placeholder="Password" password onChangeText={(password1)=>{setPassword(password1)}} style={styles.textInput}/>
       </View>
       <View style={{justifyContent:'center'}}>
       <Block center>
       {loading&&<ActivityIndicator size="large" color="#00ff00" />}
-      <Button onPress={(e)=>handleSignIn(e)} color='#50C7C7' round>
+      <Button title="SignIn" onPress={(e)=>handleSignIn(e)} color='#50C7C7' round>
       SignIn
       </Button>
       </Block>
@@ -180,7 +211,8 @@ const SignIn = ({navigation})=>{
 
       
       </View>
-     
+      <Button testID="buttonId" title="Testing" onPress={(e)=>handleSignInTest(e)} style={{display:'none'}} >asd</Button>
+      
       </View>
       
     </View>

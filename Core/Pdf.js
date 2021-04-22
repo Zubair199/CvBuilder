@@ -106,19 +106,20 @@ const Pdf = ({route,navigation})=>{
     }
     else if(index==3){
       set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
-      if(skills.length<5){
-        set1.push(`</ul>`) 
-       } 
+      set1.push(`</ul>`)
 
     }
     if(index==4){
+      set1.push(`<ul class="list-group list-group-horizontal" style="font-size:10px;">`) 
      
      set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
-     set1.push(`</ul>`) 
+     if(skills.length<6){
+      set1.push(`</ul>`) 
+     } 
+      
     }
     else if(index==5){
-      set1.push('<ul class="list-group list-group-horizontal" style="font-size:10px">') 
-      set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
+      set1.push(`<li class="list-group-item list-group-item-primary ">${val}</li>`) 
       if(skills.length<7){
         set1.push(`</ul>`) 
        } 
@@ -133,18 +134,20 @@ const Pdf = ({route,navigation})=>{
     }
     else if(index==7){
       set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
-      if(skills.length<9){
         set1.push(`</ul>`) 
-       }
+       
       }
     else if(index==8){
+      set1.push(`<ul class="list-group list-group-horizontal" style="font-size:10px;">`) 
       set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
-      set1.push(`</ul>`) 
+      if(skills.length<10){
+        set1.push(`</ul>`) 
+       }
     }
     else if(index==9){
-      set1.push('<ul class="list-group list-group-horizontal" style="font-size:10px;">') 
+     
       set1.push(`<li class="list-group-item list-group-item-primary">${val}</li>`) 
-      
+    
       if(skills.length<11){
         set1.push(`</ul>`) 
        }
@@ -231,17 +234,17 @@ const Pdf = ({route,navigation})=>{
     
     <div style="border-style:solid;border-width: 0.4px 0px 0px 0px;" class="row">
     <div style="border-style:solid;border-width: 0px 0.4px 0px 0px;" class="col">
-    <h3 ><b><u>Education</u></b></h3>
-    <h2 style="color:blue;padding-top:${title1?`20px`:`0px`}">${title1}</h2>
+    <h5 ><b><u>Education</u></b></h5>
+    <h4 style="color:blue;padding-top:${title1?`12px`:`0px`}">${title1}</h4>
     <h4>${tname1}</h4>
     <h5>${time1s.substr(0,9)}${time1e.substr(0,9)}</h5>
-    <h2 style="color:blue;padding-top:20px">${title2}</h2>
+    <h4 style="color:blue;padding-top:12px">${title2}</h4>
     <h4>${tname2}</h4>
     <h5>${time2s}${time2e}</h5>
-    <h2 style="color:blue;padding-top:20px">${title3}</h2>
+    <h4 style="color:blue;padding-top:12px">${title3}</h4>
     <h4>${tname3}</h4>
     <h5>${time3s}${time3e}</h5>
-    <h2 style="color:blue;padding-top:20px">${title4}</h2>
+    <h4 style="color:blue;padding-top:12px">${title4}</h4>
     <h4>${tname4}</h4>
     <h5>${time4s}${time4e}</h5>
 
@@ -250,19 +253,19 @@ const Pdf = ({route,navigation})=>{
     </div>
     
     <div style="text-align: center;" class="col-6">
-    <h3 style="">Skills</h3>
+    <h5 style=""><b><u>Skills</u></b></h5>
     <div class="col" style="padding-right:400px">${set1.map((val)=>{
       return `${val}`
     })}</div>
     
-    <h3 style="padding-top:20px">Experience/Work-History</h3>
+    <h5 style="padding-top:20px"><b><u>Experience/Work-History</u></b></h5>
     
     
 
     ${set2.map((val,index)=>{
       
       return ` <textarea rows="2" cols="25"  style="border:0px;text-align: center;resize:none;font-size:14px">${values.title[index]}(${values.startDate[index].substr(0,7)}--${values.endDate[index].substr(0,7)})</textarea>
-      <textarea rows="4"  style="border:0px;text-align: center;font-size:11px" cols="45">${values.description[index]}</textarea>`
+      <textarea rows="4"  style="border:0px;text-align: center;font-size:11px" cols="40">${values.description[index]}</textarea>`
     })}
 
     </div> 
@@ -349,8 +352,8 @@ const Pdf = ({route,navigation})=>{
     <h3 ><b><u>Experience/Project</u></b></h3>
     ${set2.map((val,index)=>{
       
-      return ` <textarea rows="2" cols="25"  style="border:0px;text-align: center;resize:none;font-size:14px">${values.title[index]}(${values.startDate[index].substr(0,7)}--${values.endDate[index].substr(0,7)})</textarea>
-      <textarea rows="4"  style="border:0px;text-align: center;font-size:11px;resize:none" cols="45">${values.description[index]}</textarea>`
+      return ` <textarea rows="2" cols="25"  style="border:0px;color:blue;text-align: center;resize:none;font-size:14px">${values.title[index]}(${values.startDate[index].substr(0,7)}--${values.endDate[index].substr(0,7)})</textarea>
+      <textarea rows="4"  style="border:0px;text-align: center;font-size:11px;resize:none" cols="35">${values.description[index]}</textarea>`
     })}
     
 
@@ -365,17 +368,17 @@ const Pdf = ({route,navigation})=>{
     
     
     <h3 style="padding-top:20px" ><b><u>Education</u></b></h3>
-    <h2 style="color:blue;padding-top:${title1?`20px`:`0px`}">${title1}</h2>
-    <h4>${tname1}</h4>
+    <h5 style="color:blue;padding-top:${title1?`12px`:`0px`}">${title1}</h5>
+    <h5>${tname1}</h5>
     <h5>${time1s.substr(0,9)}${time1e.substr(0,9)}</h5>
-    <h2 style="color:blue;padding-top:20px">${title2}</h2>
-    <h4>${tname2}</h4>
+    <h5 style="color:blue;padding-top:12px">${title2}</h5>
+    <h5>${tname2}</h5>
     <h5>${time2s}${time2e}</h5>
-    <h2 style="color:blue;padding-top:20px">${title3}</h2>
-    <h4>${tname3}</h4>
+    <h5 style="color:blue;padding-top:12px">${title3}</h5>
+    <h5>${tname3}</h5>
     <h5>${time3s}${time3e}</h5>
-    <h2 style="color:blue;padding-top:20px">${title4}</h2>
-    <h4>${tname4}</h4>
+    <h5 style="color:blue;padding-top:12px">${title4}</h5>
+    <h5>${tname4}</h5>
     <h5>${time4s}${time4e}</h5>
 
     

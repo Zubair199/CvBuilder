@@ -56,27 +56,27 @@ exports.signin = (req,res)=>{
     })
 }
 
-exports.signout= (req,res)=>{
+// exports.signout= (req,res)=>{
 
-    console.log(req.sessionID)
-    req.session.destroy()
-    res.clearCookie('sid', {path: '/'}).status(200).json({message:'Signout Successfully'});
+//     console.log(req.sessionID)
+//     req.session.destroy()
+//     res.clearCookie('sid', {path: '/'}).status(200).json({message:'Signout Successfully'});
     
    
-}
+// }
 
-exports.requireSignin =(req,res,next)=>{
+// exports.requireSignin =(req,res,next)=>{
     
-    const {userId} = req.session
-    console.log("in require sign in  Obj id = "+userId)
-    if(!userId){
-        return res.status(401).json({
-            error:'Please Sign in First '
-        })
+//     const {userId} = req.session
+//     console.log("in require sign in  Obj id = "+userId)
+//     if(!userId){
+//         return res.status(401).json({
+//             error:'Please Sign in First '
+//         })
 
-    }
-    next()
-} 
+//     }
+//     next()
+// } 
    
 
 
@@ -87,27 +87,27 @@ exports.requireSignin =(req,res,next)=>{
 
 // })
     
-exports.isAuth= (req,res,next)=>{
+// exports.isAuth= (req,res,next)=>{
     
     
-    let user = req.profile && req.auth && req.profile._id == req.auth._id
-    if(!user){
-        return res.status(403).json({
-            error:"Access denied"
-        })
-    }
-    next();
-}
+//     let user = req.profile && req.auth && req.profile._id == req.auth._id
+//     if(!user){
+//         return res.status(403).json({
+//             error:"Access denied"
+//         })
+//     }
+//     next();
+// }
 
   
-exports.isAdmin = (req,res,next)=>{
-     const {_id,role} = req.profile
+// exports.isAdmin = (req,res,next)=>{
+//      const {_id,role} = req.profile
   
-     console.log("in isAdmin role= "+role)
-     if(role ===0){
-         return res.status(403).json({
-             error:"Admin resource! Access denied"
-         });
-     }
-     next();
-  }
+//      console.log("in isAdmin role= "+role)
+//      if(role ===0){
+//          return res.status(403).json({
+//              error:"Admin resource! Access denied"
+//          });
+//      }
+//      next();
+//   }

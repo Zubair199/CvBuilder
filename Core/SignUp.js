@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
-import { StyleSheet, View,TouchableOpacity } from 'react-native';
-import { Input,theme,withGalio,GalioProvider, Block,Text,Icon,Button } from 'galio-framework';
+import { StyleSheet, View,ActivityIndicator} from 'react-native';
+import { Input,theme, Block,Text,Icon,Button } from 'galio-framework';
 import Toast from 'react-native-toast-message';
 import {signUp} from '../Api/CoreApis'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,6 +22,7 @@ const SignUp = ({navigation})=>{
   }
 
   useEffect(()=>{
+      //////////////////////THIS CODE SHOULD BE COMMENTED WHILE TESTING DUE TO LIMITATIONS OF React Testing library for rendering //////////////
     const unsubscribe = navigation.addListener('focus',() => {
       try {
          AsyncStorage.getItem('user').then(user=>{
@@ -37,6 +38,8 @@ const SignUp = ({navigation})=>{
         setLoading(false)
       }
     });
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
     if(error===""){
       console.log()
     }
@@ -47,7 +50,9 @@ const SignUp = ({navigation})=>{
         type: 'error'
       })
     }
+    //////////comment this variable tooo //////////during testing 
     return unsubscribe
+    ///////////////////////
   
   },[error,navigation])
   useEffect(()=>{
@@ -64,7 +69,40 @@ const SignUp = ({navigation})=>{
    
   
   },[success])
+  const handleSignUpTest = (event)=>{
+  
+   if(username ==="") {
+    
+    return false
+   
+  }
+  else if(email.trim() === "") {
+   
+    return false
+  }   else if(email!==""){
+    if(ValidateEmail(email)){
+      if(password ===""){
+        
+        return false
+      }
+      else{
+             return signUp(email,password,username)  
+      }
+    }
+  
+     else{
+      Toast.show({
+        text1:'Error',
+        text2: "Please Enter A Valid Email",
+        type: 'error'
+      })
+     }
+  }
+ 
+  //
 
+  
+}
   const handleSignUp = (event)=>{
       setLoading(true)
      if(username ==="") {
@@ -82,8 +120,7 @@ const SignUp = ({navigation})=>{
           showToast("Error","error","Please Enter Password")
         }
         else{
-        
-          
+          ////////////////////// FOr Normal App Operations Use This////////////////////////////////////////////////
           signUp(email,password,username).then(async res=>{setSuccess(`Successfully Created User ${res.data.user.username}!`); try {
             await AsyncStorage.setItem('user', JSON.stringify(res.data.user))
           } catch (e) {
@@ -93,6 +130,7 @@ const SignUp = ({navigation})=>{
             text2: "Make Sure you are Connected to the Server",
             type: 'error'
           })}else{setError(err.response.data.error);setLoading(true)} })
+          //////////////////////////////////////////////////////////////////////////////////////////////////////////
           
         }
       }
@@ -127,24 +165,25 @@ const SignUp = ({navigation})=>{
       <View style={styles.footer}>
       <View style={styles.input}>
       <Icon name="profile" family="AntDesign" size={55} style={{paddingRight:10}}/>
-      <Input rounded icon="email" family="Entypo" placeholder="Username" onChangeText={(username)=>{setUsername(username)}} placeholderTextColor={theme.COLORS.THEME} style={styles.textInput}/>
+      <Input testID="usernameId" rounded icon="email" family="Entypo" placeholder="Username" onChangeText={(username)=>{setUsername(username)}} placeholderTextColor={theme.COLORS.THEME} style={styles.textInput}/>
      
       </View>
       <View style={styles.input}>
       <Icon name="email" family="Entypo" size={55} style={{paddingRight:10}} />
-      <Input rounded icon="profile" family="AntDesign" style={styles.textInput} placeholderTextColor={theme.COLORS.THEME} placeholder="Email" type="email-address" onChangeText={(email)=>{setEmail(email)}} />
+      <Input testID="emailId" rounded icon="profile" family="AntDesign" style={styles.textInput} placeholderTextColor={theme.COLORS.THEME} placeholder="Email" type="email-address" onChangeText={(email)=>{setEmail(email)}} />
       
       </View>
       <View style={styles.input}>
       <Icon name="fingerprint" family="Entypo" size={55} style={{paddingRight:10}} />
-      <Input password rounded icon="lock" family="Entypo" viewPass placeholder="Password" placeholderTextColor={theme.COLORS.THEME} onChangeText={(password)=>{setPassword(password)}} style={styles.textInput}/>
+      <Input testID="passwordId" password rounded icon="lock" family="Entypo" viewPass placeholder="Password" placeholderTextColor={theme.COLORS.THEME} onChangeText={(password)=>{setPassword(password)}} style={styles.textInput}/>
       </View>
       <View style={{justifyContent:'center',paddingLeft:30}}>
       <Block center>
       {loading&&<ActivityIndicator size="large" color="#00ff00" />}
-      <Button onPress={(e)=>handleSignUp(e)} color='#50C7C7' round>
+      <Button  onPress={(e)=>handleSignUp(e)} color='#50C7C7' round>
         SignUp
       </Button>
+      
       </Block>
       <Block right>
       <Text style={{color: 'blue'}} onPress={()=>navigation.navigate('SignIn')}>
@@ -156,7 +195,7 @@ const SignUp = ({navigation})=>{
       </View>
      
       </View>
-      
+      <Button style={{display:'none'}} testID="buttonId" title="Testing" onPress={(e)=>handleSignUpTest(e)}>asd</Button>
     </View>
   )
 }

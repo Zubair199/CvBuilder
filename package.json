@@ -5,7 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.13.0",
@@ -13,7 +14,11 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.4",
+    "@testing-library/react-native": "^7.2.0",
     "axios": "^0.21.1",
+    "circular-json-es6": "^2.0.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "expo": "~41.0.0",
     "expo-file-system": "~11.0.2",
     "expo-intent-launcher": "~9.0.0",
@@ -22,9 +27,11 @@
     "expo-sharing": "~9.1.2",
     "expo-status-bar": "~1.0.4",
     "galio-framework": "^0.8.0",
+    "jest-environment-enzyme": "^7.1.2",
+    "jest-enzyme": "^7.1.2",
     "radio-buttons-react-native": "^1.0.4",
     "react": "16.13.1",
-    "react-dom": "16.13.1",
+    "react-dom": "^16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-modal-datetime-picker": "^9.2.0",
@@ -35,7 +42,20 @@
     "react-native-web": "^0.15.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.9.0",
+    "jest-expo": "^41.0.0",
+    "react-test-renderer": "^17.0.2"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "setupFilesAfterEnv":["./setupTests.js"],
+    "testEnvironment":"enzyme",
+    "testEnvironmentOptions":{
+      "enzymeAdapter":"react16"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|radio-buttons-react-native|react-clone-referenced-element|galio-framework|react-native-vector-icons|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+    ]
   },
   "private": true
 }

@@ -368,18 +368,18 @@ const Pdf = ({route,navigation})=>{
     
     
     <h3 style="padding-top:20px" ><b><u>Education</u></b></h3>
-    <h5 style="color:blue;padding-top:${title1?`12px`:`0px`}">${title1}</h5>
-    <h5>${tname1}</h5>
-    <h5>${time1s.substr(0,9)}${time1e.substr(0,9)}</h5>
-    <h5 style="color:blue;padding-top:12px">${title2}</h5>
-    <h5>${tname2}</h5>
-    <h5>${time2s}${time2e}</h5>
-    <h5 style="color:blue;padding-top:12px">${title3}</h5>
-    <h5>${tname3}</h5>
-    <h5>${time3s}${time3e}</h5>
-    <h5 style="color:blue;padding-top:12px">${title4}</h5>
-    <h5>${tname4}</h5>
-    <h5>${time4s}${time4e}</h5>
+    <h6 style="color:blue;padding-top:${title1?`12px`:`0px`}">${title1}</h6>
+    <h6>${tname1}</h6>
+    <h6>${time1s.substr(0,9)}${time1e.substr(0,9)}</h6>
+    <h6 style="color:blue;padding-top:12px">${title2}</h6>
+    <h6>${tname2}</h6>
+    <h6>${time2s}${time2e}</h6>
+    <h6 style="color:blue;padding-top:12px">${title3}</h6>
+    <h6>${tname3}</h6>
+    <h6>${time3s}${time3e}</h6>
+    <h6 style="color:blue;padding-top:12px">${title4}</h6>
+    <h6>${tname4}</h6>
+    <h6>${time4s}${time4e}</h6>
 
     
 

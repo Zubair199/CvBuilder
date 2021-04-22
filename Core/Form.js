@@ -277,11 +277,17 @@ const Form =  ({route,navigation})=>{
       }}} color={theme.COLORS.THEME}  placeholderTextColor={theme.COLORS.THEME}  placeholder="Masters?" style={styles.textInput} multiline={true} numberOfLines={2}/>
       <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("masterstart")}>Start Date</Button><Button onPress={()=>showDatePicker("masterend")}>End Date</Button></View> 
       </View>
-      <Text h4 >Skills( C++ , Java etc)</Text>
+      <Text h4 >Skills( C++ , Java etc) (max 12)</Text>
       <View style={styles.input}>
-      <Input testID="skillsId" icon="social-skillshare" family="Foundation" onChangeText={(skill)=>{const sk1 = skill.split(',');setSkills(sk1)}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="C++" style={styles.textInput} multiline={true} numberOfLines={100}/>
+      <Input testID="skillsId" icon="social-skillshare" family="Foundation" onChangeText={(skill)=>{const sk1 = skill.split(',');
+      let skill1=[]
+      sk1.map((val,index)=>{if(val!==""){skill1.push(val)}
+
+    })
+      setSkills(skill1)
+      }} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="C++" style={styles.textInput} multiline={true} numberOfLines={100}/>
       </View>
-      <Text h4 >Experience?</Text>
+      <Text h4 >Experience? (max 4)</Text>
       <View style={styles.input}>     
       <Input testID="extitleId" icon="text-document" family="Entypo" onChangeText={(t)=>{setCurT(t)}} value={currentTitle} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Title" style={styles.textInput} multiline={true} numberOfLines={1}/>
       </View>

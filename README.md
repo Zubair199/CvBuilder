@@ -18,9 +18,11 @@ follow the steps:
 
 2: run terminal in the project root folder and enter the following command : npm install // to download the node packages
 
-3: open another terminal in the root folder and enter "cd Server" to go the the server root folder
+3: now run the expo server using : npm run android
 
-4: now enter npm start to start the server along with the expo server and you can run the app in any device having expo app init
+4: open another terminal in the root folder and enter "cd Server" to go the the server root folder
+
+5: now enter npm start to start the server along with the expo server and you can run the app in any device having expo app init
 
 Note:
 

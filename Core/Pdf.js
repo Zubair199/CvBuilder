@@ -184,7 +184,6 @@ const Pdf = ({route,navigation})=>{
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
-       
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
         <title>Pdf Content</title>
         <style>
@@ -223,10 +222,10 @@ const Pdf = ({route,navigation})=>{
   </div>
   <div class="row">
     <div class="col">
-    <textarea rows="3"  style="border:0px" cols="35">${description}</textarea>
+    <textarea rows="3"  style="border:0px" cols="25">${description}</textarea>
     </div> 
     <div class="col">
-    <h6 style="color:grey;text-align:right;padding:8px">${address}&nbsp;&nbsp<span class="material-icons">
+    <h6 style="color:grey;text-align:right">${address}<span class="material-icons">
     home
     </span></h6>
     </div> 
@@ -338,10 +337,10 @@ const Pdf = ({route,navigation})=>{
   </div>
   <div class="row">
     <div class="col">
-    <textarea rows="3"  style="border:0px" cols="35">${description}</textarea>
+    <textarea rows="3"  style="border:0px" cols="25">${description}</textarea>
     </div> 
     <div class="col">
-    <h6 style="color:grey;text-align:right;padding:8px">${address}&nbsp;&nbsp<span class="material-icons">
+    <h6 style="color:grey;text-align:right;">${address}<span class="material-icons">
     home
     </span></h6>
     </div> 
@@ -458,6 +457,7 @@ createPDF(htmlContent).then(data=>{
   return(
     <View style={[styles.container]}>
       <Text h4>On This Screen?Press the Back Button on Your Phone</Text>
+      <Text h6>Please make sure you are on a stable network!this pdf generator uses Google Icons to generate Icons if you see no icons Please press the back button and submit again </Text>
 
       
     <ActivityIndicator size="large" color="#00ff00" />

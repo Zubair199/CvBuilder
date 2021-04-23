@@ -48,10 +48,12 @@
   },
   "jest": {
     "preset": "jest-expo",
-    "setupFilesAfterEnv":["./setupTests.js"],
-    "testEnvironment":"enzyme",
-    "testEnvironmentOptions":{
-      "enzymeAdapter":"react16"
+    "setupFilesAfterEnv": [
+      "./setupTests.js"
+    ],
+    "testEnvironment": "enzyme",
+    "testEnvironmentOptions": {
+      "enzymeAdapter": "react16"
     },
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?react-native|radio-buttons-react-native|react-clone-referenced-element|galio-framework|react-native-vector-icons|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"

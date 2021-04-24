@@ -38,7 +38,7 @@ App has been tested on Android and found to be working consistently.
 
 Ios Testing :
 
-App has been tested on Android and found to be working consistently but does not show the pdf as Intent is not available for ios.
+App has been tested on IOS and found to be working consistently but does not show the pdf as Intent is not available for ios.
 
 Testing:
 

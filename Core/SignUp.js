@@ -50,9 +50,9 @@ const SignUp = ({navigation})=>{
         type: 'error'
       })
     }
-    //////////comment this variable tooo //////////during testing 
-    return unsubscribe
-    ///////////////////////
+   ////////////////REMOVE THIS WITH EVENT LISTNER /////////////////
+    return unsubscribe 
+  
   
   },[error,navigation])
   useEffect(()=>{
@@ -111,7 +111,7 @@ const SignUp = ({navigation})=>{
       setLoading(false)
     }
     else if(email.trim() === "") {
-     
+      setLoading(false)
       showToast("Error","error","Please Enter Email Address")
     }   else if(email!==""){
       if(ValidateEmail(email)){
@@ -120,7 +120,7 @@ const SignUp = ({navigation})=>{
           showToast("Error","error","Please Enter Password")
         }
         else{
-          ////////////////////// FOr Normal App Operations Use This////////////////////////////////////////////////
+          
           signUp(email,password,username).then(async res=>{setSuccess(`Successfully Created User ${res.data.user.username}!`); try {
             await AsyncStorage.setItem('user', JSON.stringify(res.data.user))
           } catch (e) {
@@ -129,13 +129,14 @@ const SignUp = ({navigation})=>{
             text1:'Error',
             text2: "Make Sure you are Connected to the Server",
             type: 'error'
-          })}else{setError(err.response.data.error);setLoading(true)} })
-          //////////////////////////////////////////////////////////////////////////////////////////////////////////
+          })}else{setError(err.response.data.error);setLoading(false);} })
+        
           
         }
       }
     
        else{
+        setLoading(false)
         Toast.show({
           text1:'Error',
           text2: "Please Enter A Valid Email",

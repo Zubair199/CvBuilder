@@ -1,5 +1,5 @@
 // skills empty array pls look over ??
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { StyleSheet, View,ScrollView,Image } from 'react-native';
 import { Input,theme, Block,Text,Button } from 'galio-framework';
 import RadioButtonRN from 'radio-buttons-react-native';
@@ -10,6 +10,28 @@ import {Resume} from '../Api/CoreApis'
 import Icon from 'react-native-vector-icons/FontAwesome';
 const Form =  ({route,navigation})=>{
 
+  const [userId,setUserId] = useState("")
+
+
+  useEffect(()=>{
+    
+    try {
+      AsyncStorage.getItem('user').then(user=>{
+        if(user)
+        {
+          
+          setUserId(JSON.parse(user)._id)
+        }
+        
+      })
+    } catch (e) {
+      
+      console.log(e)
+    }
+
+  },[])
+  
+  
   const [email,setEmail]= useState("")
   const [title,setTitle] = useState("")
   const [username,setUsername]= useState("")
@@ -346,8 +368,12 @@ const Form =  ({route,navigation})=>{
               flag=true;
              }
            }
-          if(flag==false)
-           navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,masters,school,dateFromS,dateToS,dateToU,dateFromU,dateToM,dateFromM,dateToH,dateFromH,skills,values,layout})
+          if(flag==false){
+          // const obj ={email,title,username,description,phone,address,university,highSchool,masters,school,skills,experienceDescription:[currentDes],experienceTitle:[currentTitle],user:userId}
+          // Resume(obj).then(data1=>{console.log(data1.data)
+          // }).catch(e1=>{console.log(e1.response.data)})
+           navigation.navigate('Pdf',{email,title,username,description,phone,address,university,highSchool,masters,school,dateFromS,dateToS,dateToU,dateFromU,dateToM,dateFromM,dateToH,dateFromH,skills,values,layout,userId})
+        }
         }
       }
         } color='#50C7C7' round>
@@ -365,7 +391,7 @@ const Form =  ({route,navigation})=>{
       </View>
        {/* FOR TESTING ON JEST */}
        <Button style={{display:'none'}} testID="buttonId" onPress={(e)=>{
-           const obj ={email,title,username,description,phone,address,university,highSchool,masters,school,skills,experienceDescription:[currentDes],experienceTitle:[currentTitle]}
+           const obj ={email,title,username,description,phone,address,university,highSchool,masters,school,skills,experienceDescription:[currentDes],experienceTitle:[currentTitle],user:"607a0112a3c780495cb8fc44"}
           return Resume(obj)}} color='#50C7C7' round>
           </Button>
     </View>

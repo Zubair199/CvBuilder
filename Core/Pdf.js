@@ -4,12 +4,21 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import { Text } from 'galio-framework';
 import * as Print from 'expo-print'
 import * as FileSystem from 'expo-file-system';
-
+import {Resume} from '../Api/CoreApis'
 const Pdf = ({route,navigation})=>{
 
- 
-  const {email,title,username ,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills,values,masters,dateToM,dateFromM,layout} = route.params;
-  console.log(layout)
+  const {email,title,username ,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills,values,masters,dateToM,dateFromM,layout,userId} = route.params;
+    const saveResume = ()=>{
+      const obj = {email,title,username ,description,phone,address,university,highSchool,school,dateFromS,dateToS,dateToU,dateFromU,dateToH,dateFromH,skills,experienceDescription:values.description,experienceTitle:values.title,experienceStart:values.startDate,experienceEnd:values.endDate,masters,dateToM,dateFromM,user:userId}
+      
+      Resume(obj).then(res=>{console.log(res)}).catch(err=>{console.log(err.response.data)})
+    }
+  
+  useEffect(()=>{
+    console.log(navigation.dangerouslyGetParent())
+      saveResume();
+  },[])
+
   let title1 =""
   let tname1 = ""
   let time1s=""
@@ -202,7 +211,7 @@ const Pdf = ({route,navigation})=>{
     <div style="border-style:solid;border-width: 0.4px;"  class="container">
   <div class="row">
     <div class="col">
-     <h1 style="">${username}</h1>
+     <h3 style="">${username}</h3>
     </div>
     <div class="col">
     <h6 style="color:grey;text-align:right;padding:8px">${email}<span style="padding-top:0px" class="material-icons">email</span></h6>
@@ -458,7 +467,7 @@ createPDF(htmlContent).then(data=>{
     <View style={[styles.container]}>
       <Text h4>On This Screen?Press the Back Button on Your Phone</Text>
       <Text h6>Please make sure you are on a stable network!this pdf generator uses Google Icons to generate Icons if you see no icons Please press the back button and submit again </Text>
-
+      
       
     <ActivityIndicator size="large" color="#00ff00" />
    

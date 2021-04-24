@@ -2,11 +2,10 @@ const mongoose = require('mongoose')
 const crypto = require('crypto')
 const {v1 : uuidv1} = require('uuid')
 
-
+const {ObjectId} = mongoose.Schema
 const resumeSchema = new mongoose.Schema({
   username:{
     type:String,
-    trim:true,
     required:true,
     maxlength:32
   },
@@ -14,11 +13,12 @@ const resumeSchema = new mongoose.Schema({
     type:String,
     trim:true,
     required:true,
-    unique:true
+    unique:false
+    
   },
   title:{
     type:String,
-
+    
   },
   address:{
     type:String,
@@ -91,6 +91,11 @@ const resumeSchema = new mongoose.Schema({
   experienceEnd:{
     type:Array,
     default:["09/2021"]
+  },
+  user:{
+    type:ObjectId,
+    ref:'User',
+   required:true
   }
 
 },{timestamps:true})

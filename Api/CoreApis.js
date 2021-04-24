@@ -34,6 +34,6 @@ import axios from 'axios'
   }
   
   const axiosIns = axios.create(opt)
-   return await axiosIns.post('http://192.168.100.8:8088/api/resume/create',obj)
+   return await axiosIns.post('http://192.168.100.10:8088/api/resume/create',obj)
   }
 

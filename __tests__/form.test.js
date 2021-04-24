@@ -25,6 +25,7 @@ describe('<Form Component />', () => {
     masters:"Fast University",
     dateFromS:"09/2021",dateToS:"09/2021",dateToU:"09/2021",dateFromU:"09/2021",dateToM:"09/2021",dateFromM:"09/2021",dateToH:"09/2021",dateFromH:"09/2021",
     highSchool:"habib high School",
+    user:"607a0112a3c780495cb8fc44"
 }
   it("testaction",async() => {
     //const onPress =jest.fn()
@@ -69,7 +70,9 @@ describe('<Form Component />', () => {
      }
      catch(e){
        if(e.response){
-       console.log(e.response.data)
+         console.log(e.response.data)
+         fail(e)
+       //console.log(e.response.data)
        }
      }
        

@@ -27,6 +27,7 @@ const SignIn = ({navigation})=>{
 
   useEffect(()=>{
     //////////////////////THIS CODE SHOULD BE COMMENTED WHILE TESTING DUE TO LIMITATIONS OF React Testing library for rendering //////////////
+    
     const unsubscribe = navigation.addListener('focus',() => {
     
       try {
@@ -98,6 +99,7 @@ const SignIn = ({navigation})=>{
     else if(email!==""){
       if(ValidateEmail(email)){
         if(password ===""){
+          setLoading(false)
           return false
          
         }
@@ -122,11 +124,7 @@ const SignIn = ({navigation})=>{
         }
         else{
           
-          
-            // FOR TESTING USE THIS {
-     //             return signIn(email,password)
-            //}
-            // For Normal App Operations use this 
+
 
              signIn(email,password).then(async(res)=>{
             try {
@@ -160,6 +158,7 @@ const SignIn = ({navigation})=>{
       }
     
        else{
+        setLoading(false)
         Toast.show({
           text1:'Error',
           text2: "Please Enter A Valid Email",

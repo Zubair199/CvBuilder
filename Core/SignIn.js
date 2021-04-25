@@ -26,7 +26,7 @@ const SignIn = ({navigation})=>{
   }
 
   useEffect(()=>{
-    //////////////////////THIS CODE SHOULD BE COMMENTED WHILE TESTING DUE TO LIMITATIONS OF React Testing library for rendering //////////////
+   
     
     const unsubscribe = navigation.addListener('focus',() => {
     
@@ -45,7 +45,7 @@ const SignIn = ({navigation})=>{
       }
 
     });
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+  
     if(error===""&&success===""){
       // do nothing
     }

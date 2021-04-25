@@ -3,6 +3,13 @@ import React from 'react'
 import Signin from "../Core/SignIn"
 import {render,act,fireEvent} from '@testing-library/react-native'
 //import {shallow,mount} from "enzyme"
+
+const mockNavigation = {
+  navigate: jest.fn(),
+  // it should also have 
+  addListener: jest.fn()
+};
+
 describe('<Sign In Component />', () => {
   const expectedResponse = {
         
@@ -18,7 +25,7 @@ describe('<Sign In Component />', () => {
     //const onPress =jest.fn()
    
 
-    const {getByTestId } = render(<Signin/>)
+    const {getByTestId } = render(<Signin navigation={mockNavigation}/>)
     const password = getByTestId("passwordId")
     
     const email = getByTestId("emailId")

@@ -6,32 +6,11 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-import {Resume} from '../Api/CoreApis'
+import {Resume,ResumeRead,ResumeDel} from '../Api/CoreApis'
 import Icon from 'react-native-vector-icons/FontAwesome';
 const Form =  ({route,navigation})=>{
-
+  
   const [userId,setUserId] = useState("")
-
-
-  useEffect(()=>{
-    
-    try {
-      AsyncStorage.getItem('user').then(user=>{
-        if(user)
-        {
-          
-          setUserId(JSON.parse(user)._id)
-        }
-        
-      })
-    } catch (e) {
-      
-      console.log(e)
-    }
-
-  },[])
-  
-  
   const [email,setEmail]= useState("")
   const [title,setTitle] = useState("")
   const [username,setUsername]= useState("")
@@ -43,7 +22,7 @@ const Form =  ({route,navigation})=>{
   const [masters,setMasters]= useState("")
   const [phone,setPhone]= useState(0)
   const [skills,setSkills]= useState([])
-  const [error,setError]= useState("")
+  const [error,setError]= useState(false)
   const [current , setCurrent] = useState("")
   const [dateFromS, setDateFromS] = useState("")
   const [dateToS, setDateToS] = useState("")
@@ -53,7 +32,6 @@ const Form =  ({route,navigation})=>{
   const [dateToU, setDateToU] = useState("")
   const [dateFromM, setDateFromM] = useState("")
   const [dateToM, setDateToM] = useState("")
-
   const [values , setValues] = useState({
     title:[],
     description:[],
@@ -66,6 +44,67 @@ const Form =  ({route,navigation})=>{
   const [currentStart,setCurS] = useState("")
   const [currentEnd,setCurE] = useState("")
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [data1,setData1] = useState({})
+  useEffect(()=>{
+    
+    
+      const unsubscribe = navigation.addListener('focus',() => {
+
+        try{
+        AsyncStorage.getItem('user').then(user=>{
+          if(user)
+          {
+            
+            setUserId(JSON.parse(user)._id)
+            ResumeRead(JSON.parse(user)._id).then(res=>{
+              
+             setData1(res.data)
+             setError(true)
+             // experienceDescription:[currentDes]
+              // experienceTitle:[currentTitle]
+              // user:JSON.parse(user)._id
+  
+            }).catch(e=>{setError(e.response.data.error);console.log(!e.response.data.error)})
+  
+          }
+          
+        })
+      }
+       catch (e) {
+        
+        console.log(e)
+      }
+     
+      
+      });
+      return unsubscribe
+  },[navigation])
+  
+
+  const handlePrev = ()=>{
+ 
+   
+
+    setSkills(data1.skills)
+    setValues({
+      title:data1.experienceTitle,
+      description:data1.experienceDescription,
+      startDate:data1.experienceStart,
+      endDate:data1.experienceEnd
+
+    })
+    navigation.navigate('Pdf',{email:data1.email,title:data1.title,username:data1.username,description:data1.description,phone:data1.phone,address:data1.address,university:data1.university,highSchool:data1.highSchool,masters:data1.masters,school:data1.school,dateFromS:data1.dateFromS,dateToS:data1.dateToS,dateToU:data1.dateToU,dateFromU:data1.dateFromU,dateToM:data1.dateToM,dateFromM:data1.dateFromM,dateToH:data1.dateToH,dateFromH:data1.dateFromH,skills,values:{ title:data1.experienceTitle,
+      description:data1.experienceDescription,
+      startDate:data1.experienceStart,
+      endDate:data1.experienceEnd},layout,userId:userId})
+  }
+  const handlePrevDel = ()=>{
+ 
+    ResumeDel(userId).then(res=>{console.log(res);setError(false)}).catch(err=>{console.log})
+  }
+  
+
+  
   const data = [
     {
       label: 'Education,skills,experience/projects',
@@ -230,7 +269,15 @@ const Form =  ({route,navigation})=>{
 
       <View style={styles.header}><Image source={require('../assets/logo/resume.png')} style={{ width: 100, height: 100,borderTopLeftRadius:50,borderTopRightRadius:50,borderBottomRightRadius:50,borderBottomLeftRadius:50 }}/>
       <Text  h4 color="#fff"	>Resume Form</Text></View>
+
       <View style={styles.footer}>
+      <Block center>
+        {/* <Block center><Button>Prev Resume?</Button></Block> */}
+        {error&&<Block style={{marginTop:10,marginBottom:20}} center><Button round onPress={()=>handlePrev()} color='warning' >Use Prev Resume</Button></Block>}
+        {error&&<Block style={{marginTop:10,marginBottom:20}} center><Button round onPress={()=>handlePrevDel()} color='warning' >Delete Prev Resume</Button></Block>}
+       
+       
+       
       <Text h4 >Credentials</Text>
       <View style={styles.input}>
       
@@ -255,9 +302,12 @@ const Form =  ({route,navigation})=>{
       <View style={styles.input}>
       <Input testID="descriptionId" icon="text-document" onChangeText={(des)=>{setDescription(des)}} family="Entypo" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Description" style={styles.textInput} multiline={true} numberOfLines={4}/>
       </View>
+      </Block>
+      <Block center>
       <Text h4 >Education</Text>
+      </Block>
       <View style={{marginTop:10}}>
-     
+      <Block center >
       <Input testID="schoolId" icon="school" onChangeText={(s)=>{setSchool(s);if( dateFromS!==""&& dateToS!==""){
         Toast.show({
           text1: "Success",
@@ -265,15 +315,24 @@ const Form =  ({route,navigation})=>{
           type: 'success'
         })
       }}}  family="FontAwesome5" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="School Name" style={styles.textInput} multiline={true} numberOfLines={2}/>
-      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("schoolstart")}>Start Date</Button><Button onPress={()=>showDatePicker("schoolend")}>End Date</Button></View>
+      </Block>
+      <Block center row>
+      <Text style={{paddingRight:70}}>{dateFromS!==""?"Start:"+dateFromS:dateFromS!==""?dateFromS:dateFromS}</Text>
      
+      <Text>{dateToS!==""?"start:"+dateToS:dateToS!==""?dateToS:dateToS}</Text>
+      
+      
+      </Block>
+     
+      <View style={{marginTop:10,flexDirection:"row"}}><Button round onPress={()=>showDatePicker("schoolstart")}>Start Date</Button><Button round onPress={()=>showDatePicker("schoolend")}>End Date</Button></View>
+      
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-
+ <Block center>
       <Input testID="highSchoolId" icon="school" family="FontAwesome5" onChangeText={(h)=>{setHighSchool(h);if( dateFromH!==""&& dateToH!==""){
         Toast.show({
           text1: "Success",
@@ -281,7 +340,16 @@ const Form =  ({route,navigation})=>{
           type: 'success'
         })
       }}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="High School?" style={styles.textInput} multiline={true} numberOfLines={2}/>
-      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("highschoolstart")}>Start Date</Button><Button onPress={()=>showDatePicker("highschoolend")}>End Date</Button></View>  
+      </Block>
+      <Block center row>
+      <Text style={{paddingRight:70}}>{dateFromH!==""?"Start:"+dateFromH:dateFromH!==""?dateFromH:dateFromH}</Text>
+     
+      <Text>{dateToH!==""?"End:"+dateToH:dateToH!==""?dateToH:dateToH}</Text>
+      
+      
+      </Block>
+      <View style={{marginTop:10,flexDirection:"row"}}><Button round onPress={()=>showDatePicker("highschoolstart")}>Start Date</Button><Button round onPress={()=>showDatePicker("highschoolend")}>End Date</Button></View>  
+      <Block center>
       <Input testID="universityId" icon="school" family="FontAwesome5" onChangeText={(u)=>{setUniversity(u);if( dateFromU!==""&& dateToU!==""){
         Toast.show({
           text1: "Success",
@@ -289,7 +357,16 @@ const Form =  ({route,navigation})=>{
           type: 'success'
         })
       }}} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="University?" style={styles.textInput} multiline={true} numberOfLines={2}/>
-      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("unistart")}>Start Date</Button><Button onPress={()=>showDatePicker("uniend")}>End Date</Button></View>
+      </Block>
+      <Block center row>
+      <Text style={{paddingRight:70}}>{dateFromU!==""?"Start:"+dateFromU:dateFromU!==""?dateFromU:dateFromU}</Text>
+     
+      <Text>{dateToU!==""?"End:"+dateToU:dateToU!==""?dateToU:dateToU}</Text>
+      
+      
+      </Block>
+      <View style={{marginTop:10,flexDirection:"row"}}><Button round onPress={()=>showDatePicker("unistart")}>Start Date</Button><Button round onPress={()=>showDatePicker("uniend")}>End Date</Button></View>
+      <Block center>
       <Input testID="mastersId" icon="school" family="FontAwesome5" onChangeText={(m)=>{setMasters(m);if( dateFromM!==""&& dateToM!==""){
         Toast.show({
           text1: "Success",
@@ -297,10 +374,22 @@ const Form =  ({route,navigation})=>{
           type: 'success'
         })
       }}} color={theme.COLORS.THEME}  placeholderTextColor={theme.COLORS.THEME}  placeholder="Masters?" style={styles.textInput} multiline={true} numberOfLines={2}/>
-      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("masterstart")}>Start Date</Button><Button onPress={()=>showDatePicker("masterend")}>End Date</Button></View> 
+      </Block>
+      <Block center row>
+      <Text style={{paddingRight:70}}>{dateFromM!==""?"Start:"+dateFromM:dateFromM!==""?dateFromM:dateFromM}</Text>
+     
+      <Text>{dateToM!==""?"End:"+dateToM:dateToM!==""?dateToM:dateToM}</Text>
+      
+      
+      </Block>
+      <View style={{marginTop:10,flexDirection:"row"}}><Button round onPress={()=>showDatePicker("masterstart")}>Start Date</Button><Button round onPress={()=>showDatePicker("masterend")}>End Date</Button></View> 
+      
       </View>
+      <Block center>
       <Text h4 >Skills( C++ , Java etc) (max 12)</Text>
+      
       <View style={styles.input}>
+      
       <Input testID="skillsId" icon="social-skillshare" family="Foundation" onChangeText={(skill)=>{const sk1 = skill.split(',');
       let skill1=[]
       sk1.map((val,index)=>{if(val!==""){skill1.push(val)}
@@ -308,18 +397,38 @@ const Form =  ({route,navigation})=>{
     })
       setSkills(skill1)
       }} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="C++" style={styles.textInput} multiline={true} numberOfLines={100}/>
+     
       </View>
+      </Block>
+      <Block center>
       <Text h4 >Experience? (max 4)</Text>
+      </Block>
+      <Block center>
       <View style={styles.input}>     
+     
       <Input testID="extitleId" icon="text-document" family="Entypo" onChangeText={(t)=>{setCurT(t)}} value={currentTitle} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Title" style={styles.textInput} multiline={true} numberOfLines={1}/>
+      
       </View>
+      </Block>
+      <Block center>
       <View style={styles.input}>     
       <Input testID="exdescriptionId"  icon="text-document" family="Entypo" onChangeText={(d)=>{setCurD(d)}} value={currentDes} color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="description" style={styles.textInput} multiline={true} numberOfLines={1}/>
       </View>
-      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>showDatePicker("projects")} >Start Date</Button><Button onPress={()=>showDatePicker("projecte")}>End Date</Button></View>
-      <View style={{marginTop:10,flexDirection:"row"}}><Button onPress={()=>handleExperience()} color='info' >Add Proj/Exp</Button></View>
+      </Block>
+      <Block center row>
+      <Text style={{paddingRight:70}}>{currentStart!==""?"Start:"+currentStart:currentStart!==""?currentStart:currentStart}</Text>
+     
+      <Text>{currentEnd!==""?"End:"+currentEnd:currentEnd!==""?currentEnd:currentEnd}</Text>
+      
+      
+      </Block>
 
+      <View style={{marginTop:10,flexDirection:"row"}}><Button round onPress={()=>showDatePicker("projects")} >Start Date</Button><Button round onPress={()=>showDatePicker("projecte")}>End Date</Button></View>
+      <Block style={{marginTop:10}} center><Button round onPress={()=>handleExperience()} color='info' >Add Proj/Exp</Button></Block>
+      
+      <Block center>
       <Text h4>Layouts!</Text>
+      </Block>
       <RadioButtonRN
         data={data}
         selectedBtn={(e) =>{setLayout(e.accessibilityLabel);console.log(e.accessibilityLabel)}}
@@ -330,8 +439,11 @@ const Form =  ({route,navigation})=>{
             color="#2c9dd1"
           />
         }
+        animationTypes={['pulse','rotate']}
+        activeColor="#0539f4"
         initial={1}
       />
+     
       
       <Block center>
         
@@ -394,6 +506,7 @@ const Form =  ({route,navigation})=>{
            const obj ={email,title,username,description,phone,address,university,highSchool,masters,school,skills,experienceDescription:[currentDes],experienceTitle:[currentTitle],user:"607a0112a3c780495cb8fc44"}
           return Resume(obj)}} color='#50C7C7' round>
           </Button>
+          
     </View>
     </ScrollView>
   )

@@ -78,12 +78,12 @@ const Pdf = ({route,navigation})=>{
     time1e=dateToU
      title2 ="HIGH-SCHOOL"
      tname2 = highSchool
-     time2s=dateFromH+"--"
-     time2e=dateToH
+     time2s="("+dateFromH.toString().substr(0,7)+"/"
+     time2e=dateToH.toString().substr(0,7)+")"
      title3 ="SCHOOL"
      tname3 = school
-     time3s=dateFromS+"--"
-     time3e=dateToS
+     time3s="("+dateFromS.toString().substr(0,7)+"/"
+     time3e=dateToS.toString().substr(0,7)+")"
      console.log(time2s,time2e)
   }
 
@@ -245,7 +245,7 @@ const Pdf = ({route,navigation})=>{
     <h5 ><b><u>Education</u></b></h5>
     <h4 style="color:blue;padding-top:${title1?`12px`:`0px`}">${title1}</h4>
     <h4>${tname1}</h4>
-    <h5>${time1s.substr(0,9)}${time1e.substr(0,9)}</h5>
+    <h5>${time1s}${time1e}</h5>
     <h4 style="color:blue;padding-top:12px">${title2}</h4>
     <h4>${tname2}</h4>
     <h5>${time2s}${time2e}</h5>
@@ -378,7 +378,7 @@ const Pdf = ({route,navigation})=>{
     <h3 style="padding-top:20px" ><b><u>Education</u></b></h3>
     <h6 style="color:blue;padding-top:${title1?`12px`:`0px`}">${title1}</h6>
     <h6>${tname1}</h6>
-    <h6>${time1s.substr(0,9)}${time1e.substr(0,9)}</h6>
+    <h6>${time1s}${time1e}</h6>
     <h6 style="color:blue;padding-top:12px">${title2}</h6>
     <h6>${tname2}</h6>
     <h6>${time2s}${time2e}</h6>

@@ -3,6 +3,12 @@ import React from 'react'
 import SignUp from "../Core/SignUp"
 import {render,act,fireEvent} from '@testing-library/react-native'
 //import {shallow,mount} from "enzyme"
+
+const mockNavigation = {
+  navigate: jest.fn(),
+  // it should also have 
+  addListener: jest.fn()
+};
 describe('<Sign UP Component/>', () => {
   const expectedResponse = {
         
@@ -18,7 +24,7 @@ describe('<Sign UP Component/>', () => {
     //const onPress =jest.fn()
    
 
-    const {getByTestId } = render(<SignUp/>)
+    const {getByTestId } = render(<SignUp navigation={mockNavigation}/>)
       const password = getByTestId("passwordId")
       const email = getByTestId("emailId")
       const username = getByTestId("usernameId")

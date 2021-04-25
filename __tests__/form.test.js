@@ -1,10 +1,14 @@
 import 'react-native';
 import React from 'react'
 import Form from "../Core/Form"
-import {render,act,fireEvent} from '@testing-library/react-native'
+import {render,fireEvent} from '@testing-library/react-native'
 
+const mockNavigation = {
+  navigate: jest.fn(),
+  // it should also have 
+  addListener: jest.fn()
+};
 
-//import {shallow,mount} from "enzyme"
 describe('<Form Component />', () => {
   const expectedResponse = {
         
@@ -29,7 +33,7 @@ describe('<Form Component />', () => {
 }
   it("testaction",async() => {
     //const onPress =jest.fn()
-    const {getByTestId} = render(<Form/>)
+    const {getByTestId} = render(<Form navigation={mockNavigation}/>)
     //const handleClick = jest.spyOn(React, "useState");
    const email =getByTestId("emailId")
   const title = getByTestId("titleId")
@@ -63,7 +67,7 @@ describe('<Form Component />', () => {
 
     
     
-     // //Here button createCv is fired and response taken in const
+     //Here button createCv is fired and response taken in const
      try{
       const val = await fireEvent.press(FormButton)
       expect(val.data.resume).toEqual(expectedResponse);
@@ -72,15 +76,10 @@ describe('<Form Component />', () => {
        if(e.response){
          console.log(e.response.data)
          fail(e)
-       //console.log(e.response.data)
-       }
-     }
        
-      
-      
+       }
+     } 
      //Here response is matched with real response
-     // 
-           
     })
     
     

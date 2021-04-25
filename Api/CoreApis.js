@@ -10,7 +10,7 @@ import axios from 'axios'
       timeout: 4000,
     }
     const axiosIns = axios.create(opt)
-    return await axiosIns.post('http://192.168.100.10:8088/api/signin',user)
+    return await axiosIns.post('http://192.168.100.5:8088/api/signin',user)
   }
   export const signUp=async (email,password,username)=>{ 
    const user= {
@@ -22,7 +22,7 @@ import axios from 'axios'
     timeout: 4000,
   }
   const axiosIns = axios.create(opt)
-   return await axiosIns.post('http://192.168.100.10:8088/api/signup',user)
+   return await axiosIns.post('http://192.168.100.5:8088/api/signup',user)
   }
   export const Resume=async (obj)=>{ 
   //  const user= {
@@ -34,6 +34,32 @@ import axios from 'axios'
   }
   
   const axiosIns = axios.create(opt)
-   return await axiosIns.post('http://192.168.100.10:8088/api/resume/create',obj)
+   return await axiosIns.post('http://192.168.100.5:8088/api/resume/create',obj)
+  }
+
+
+  export const ResumeRead=async (user)=>{
+    
+    
+    const opt = {
+      timeout: 4000,
+    }
+    
+    const axiosIns = axios.create(opt)
+     return await axiosIns.get('http://192.168.100.5:8088/api/resume/read/'+user)
+
+
+  }
+  export const ResumeDel=async (user)=>{
+    
+    
+    const opt = {
+      timeout: 4000,
+    }
+    
+    const axiosIns = axios.create(opt)
+     return await axiosIns.get('http://192.168.100.5:8088/api/resume/delete/'+user)
+
+
   }
 

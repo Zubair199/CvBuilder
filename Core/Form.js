@@ -22,6 +22,7 @@ const Form =  ({route,navigation})=>{
   const [masters,setMasters]= useState("")
   const [phone,setPhone]= useState(0)
   const [skills,setSkills]= useState([])
+  const [showS,setS]=useState("")
   const [error,setError]= useState(false)
   const [current , setCurrent] = useState("")
   const [dateFromS, setDateFromS] = useState("")
@@ -57,10 +58,10 @@ const Form =  ({route,navigation})=>{
             
             setUserId(JSON.parse(user)._id)
             ResumeRead(JSON.parse(user)._id).then(res=>{
-              
+              console.log(res.data)
              setData1(res.data)
              setError(true)
-             // experienceDescription:[currentDes]
+             // experienceDescription:[currentDes
               // experienceTitle:[currentTitle]
               // user:JSON.parse(user)._id
   
@@ -93,14 +94,38 @@ const Form =  ({route,navigation})=>{
       endDate:data1.experienceEnd
 
     })
-    navigation.navigate('Pdf',{email:data1.email,title:data1.title,username:data1.username,description:data1.description,phone:data1.phone,address:data1.address,university:data1.university,highSchool:data1.highSchool,masters:data1.masters,school:data1.school,dateFromS:data1.dateFromS,dateToS:data1.dateToS,dateToU:data1.dateToU,dateFromU:data1.dateFromU,dateToM:data1.dateToM,dateFromM:data1.dateFromM,dateToH:data1.dateToH,dateFromH:data1.dateFromH,skills,values:{ title:data1.experienceTitle,
-      description:data1.experienceDescription,
-      startDate:data1.experienceStart,
-      endDate:data1.experienceEnd},layout,userId:userId})
-  }
+    setEmail(data1.email)
+    setUsername(data1.username)
+    setSchool(data1.school)
+    setHighSchool(data1.highSchool)
+    setUniversity(data1.university)
+    setMasters(data1.masters)
+    setTitle(data1.title)
+    setDescription(data1.description)
+    setAddress(data1.address)
+    setPhone(data1.phone)
+    setDateFromH(data1.dateFromH)
+    setDateToH(data1.dateToH)
+    setDateFromM(data1.dateFromM)
+    setDateToM(data1.dateToM)
+    setDateFromU(data1.dateFromU)
+    setDateFromS(data1.dateFromS)
+    setDateToS(data1.dateToS)
+    setDateToU(data1.dateToU)
+    let skills21 = ""
+     data1.skills.map((val,index)=>{
+      skills21 = skills21+val+","
+    })
+    setSkills(data1.skills)
+    setS(skills21)
+  //   navigation.navigate('Pdf',{email:data1.email,title:data1.title,username:data1.username,description:data1.description,phone:data1.phone,address:data1.address,university:data1.university,highSchool:data1.highSchool,masters:data1.masters,school:data1.school,dateFromS:data1.dateFromS,dateToS:data1.dateToS,dateToU:data1.dateToU,dateFromU:data1.dateFromU,dateToM:data1.dateToM,dateFromM:data1.dateFromM,dateToH:data1.dateToH,dateFromH:data1.dateFromH,skills,values:{ title:data1.experienceTitle,
+  //     description:data1.experienceDescription,
+  //     startDate:data1.experienceStart,
+  //     endDate:data1.experienceEnd},layout,userId:userId})
+   }
   const handlePrevDel = ()=>{
  
-    ResumeDel(userId).then(res=>{console.log(res);setError(false)}).catch(err=>{console.log})
+    ResumeDel(userId).then(res=>{console.log(res);setError(false)}).catch(err=>{console.log(err)})
   }
   
 
@@ -281,26 +306,26 @@ const Form =  ({route,navigation})=>{
       <Text h4 >Credentials</Text>
       <View style={styles.input}>
       
-      <Input testID="usernameId" icon="profile" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholder="Username" onChangeText={(username1)=>{const username12=username1.length>1&&username1.charAt(0).toUpperCase() + username1.substr(1,username1.length);setUsername(username12)}} placeholderTextColor={theme.COLORS.THEME} />
+      <Input testID="usernameId" value={username} icon="profile" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholder="Username" onChangeText={(username1)=>{const username12=username1.length>1&&username1.charAt(0).toUpperCase() + username1.substr(1,username1.length);setUsername(username12)}} placeholderTextColor={theme.COLORS.THEME} />
      
       </View>
       <View style={styles.input}>
       
-      <Input testID="titleId" icon="profile" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholder="Title" onChangeText={(tiles)=>{setTitle(tiles.toUpperCase() )}} placeholderTextColor={theme.COLORS.THEME} />
+      <Input testID="titleId" value={title} icon="profile" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholder="Title" onChangeText={(tiles)=>{setTitle(tiles.toUpperCase() )}} placeholderTextColor={theme.COLORS.THEME} />
      
       </View>
       <View style={styles.input}>
       
-      <Input testID="emailId" icon="email" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Email" type="email-address" onChangeText={(email1)=>{setEmail(email1)}} />
+      <Input testID="emailId" value={email} icon="email" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Email" type="email-address" onChangeText={(email1)=>{setEmail(email1)}} />
       </View>
       <View style={styles.input}>
-      <Input testID="phoneId" icon="phone" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Phone Number" type="numeric" onChangeText={(phon)=>{setPhone(phon)}} />
+      <Input testID="phoneId" value={phone} icon="phone" family="AntDesign" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Phone Number" type="numeric" onChangeText={(phon)=>{setPhone(phon)}} />
       </View>
       <View style={styles.input}>
-      <Input testID="addressId" icon="address" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Address" onChangeText={(add1)=>{setAddress(add1)}} />
+      <Input testID="addressId" value={address} icon="address" family="Entypo" color={theme.COLORS.THEME} style={styles.textInput} placeholderTextColor={theme.COLORS.THEME}  placeholder="Address" onChangeText={(add1)=>{setAddress(add1)}} />
       </View>
       <View style={styles.input}>
-      <Input testID="descriptionId" icon="text-document" onChangeText={(des)=>{setDescription(des)}} family="Entypo" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Description" style={styles.textInput} multiline={true} numberOfLines={4}/>
+      <Input testID="descriptionId" value={description} icon="text-document" onChangeText={(des)=>{setDescription(des)}} family="Entypo" color={theme.COLORS.THEME} placeholderTextColor={theme.COLORS.THEME}  placeholder="Description" style={styles.textInput} multiline={true} numberOfLines={4}/>
       </View>
       </Block>
       <Block center>
@@ -308,7 +333,7 @@ const Form =  ({route,navigation})=>{
       </Block>
       <View style={{marginTop:10}}>
       <Block center >
-      <Input testID="schoolId" icon="school" onChangeText={(s)=>{setSchool(s);if( dateFromS!==""&& dateToS!==""){
+      <Input testID="schoolId" value={school} icon="school" onChangeText={(s)=>{setSchool(s);if( dateFromS!==""&& dateToS!==""){
         Toast.show({
           text1: "Success",
           text2:  "High School Form Filled",
@@ -333,7 +358,7 @@ const Form =  ({route,navigation})=>{
         onCancel={hideDatePicker}
       />
  <Block center>
-      <Input testID="highSchoolId" icon="school" family="FontAwesome5" onChangeText={(h)=>{setHighSchool(h);if( dateFromH!==""&& dateToH!==""){
+      <Input value={highSchool} testID="highSchoolId" icon="school" family="FontAwesome5" onChangeText={(h)=>{setHighSchool(h);if( dateFromH!==""&& dateToH!==""){
         Toast.show({
           text1: "Success",
           text2:  "High School Form Filled",
@@ -350,7 +375,7 @@ const Form =  ({route,navigation})=>{
       </Block>
       <View style={{marginTop:10,flexDirection:"row"}}><Button round onPress={()=>showDatePicker("highschoolstart")}>Start Date</Button><Button round onPress={()=>showDatePicker("highschoolend")}>End Date</Button></View>  
       <Block center>
-      <Input testID="universityId" icon="school" family="FontAwesome5" onChangeText={(u)=>{setUniversity(u);if( dateFromU!==""&& dateToU!==""){
+      <Input value={university} testID="universityId" icon="school" family="FontAwesome5" onChangeText={(u)=>{setUniversity(u);if( dateFromU!==""&& dateToU!==""){
         Toast.show({
           text1: "Success",
           text2:  "University Form Filled",
@@ -367,7 +392,7 @@ const Form =  ({route,navigation})=>{
       </Block>
       <View style={{marginTop:10,flexDirection:"row"}}><Button round onPress={()=>showDatePicker("unistart")}>Start Date</Button><Button round onPress={()=>showDatePicker("uniend")}>End Date</Button></View>
       <Block center>
-      <Input testID="mastersId" icon="school" family="FontAwesome5" onChangeText={(m)=>{setMasters(m);if( dateFromM!==""&& dateToM!==""){
+      <Input value={masters} testID="mastersId" icon="school" family="FontAwesome5" onChangeText={(m)=>{setMasters(m);if( dateFromM!==""&& dateToM!==""){
         Toast.show({
           text1: "Success",
           text2:  "Masters Form Filled",
@@ -390,7 +415,7 @@ const Form =  ({route,navigation})=>{
       
       <View style={styles.input}>
       
-      <Input testID="skillsId" icon="social-skillshare" family="Foundation" onChangeText={(skill)=>{const sk1 = skill.split(',');
+      <Input testID="skillsId" icon="social-skillshare" value={showS} family="Foundation" onChangeText={(skill)=>{const sk1 = skill.split(',');
       let skill1=[]
       sk1.map((val,index)=>{if(val!==""){skill1.push(val)}
 
